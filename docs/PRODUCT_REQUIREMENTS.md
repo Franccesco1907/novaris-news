@@ -87,6 +87,10 @@ Novaris News is an autonomous, audio-first news service launching in Spanish for
 | FR-13 | An authorized operator shall be able to stop new publication and playback through a kill switch. |
 | FR-14 | The system shall retain an audit trail of inputs, policy decisions, generated scripts, audio versions, publications, and corrections. |
 | FR-15 | The system shall hold or reject an item when required evidence is insufficient or materially contradictory, without resolving the gap through generation. |
+| FR-16 | The system shall evaluate playback eligibility on every request and shall not play an edition 16 hours or more after its original publication time. |
+| FR-17 | A replayed prior edition shall disclose its original timestamp and that no newer verified edition exists, audibly and visibly. |
+| FR-18 | A critical error shall withdraw affected playback immediately while preserving immutable internal evidence and audit history. |
+| FR-19 | When no edition is eligible, the system shall show an unavailable status, serve no audio, and never generate filler. |
 
 ## Source and evidence policy
 
@@ -125,6 +129,8 @@ Missing rights evidence, expired verification, or unknown attribution prevents e
 - Activating the kill switch prevents new publication and follows a defined action for currently scheduled content.
 - Operators can reconstruct why an item was published or rejected from the audit trail.
 - A critical policy, provenance, or corroboration dependency failure causes affected items to fail closed.
+- A held new edition never extends an earlier edition's 16-hour window; replay disclosure is audible and visible.
+- A withdrawal invalidates cached/direct playback while retaining the internal audit record.
 
 ## Success metrics
 
@@ -157,11 +163,11 @@ These metrics assess process quality. They must not be presented as a universal 
 ## Open decisions
 
 1. Final legal jurisdiction and counsel-confirmed requirements for the Peru/Latin America launch.
-2. Source-registry population, source-by-source rights verification, and review frequency.
-3. Bulletin freshness, replay, and retention policy.
+2. Technical and legal promotion of selected registry candidates from non-active to admitted status.
+3. Counsel-approved retention periods and deletion methods for each data class.
 4. Distribution surface and the precise meaning of a future 24/7 service.
 5. Monetization and its separation from editorial prioritization.
-6. Governance ownership, incident response, and operator access model.
+6. Named governance ownership, tested incident response, and operator access model.
 7. Measurable launch thresholds for quality, latency, and availability.
 8. Technology stack and hosting model.
 

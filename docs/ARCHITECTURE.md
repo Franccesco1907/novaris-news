@@ -46,7 +46,7 @@ Observability, audit, policy versioning, and kill-switch control span every stag
 | Script generation | Produce a concise bulletin script constrained to approved evidence | Add unsupported context, quotes, or certainty |
 | Claim validation | Map material claims to evidence and verify required disclosure | Repair missing evidence by inventing text |
 | Text-to-speech | Render an approved script and disclosure into audio | Change factual wording without creating a new script version |
-| Scheduler and delivery | Assemble bulletins, publish artifacts, and serve playback | Bypass publication state or correction rules |
+| Scheduler and delivery | Assemble bulletins, enforce per-request edition eligibility, publish artifacts, and serve playback | Bypass publication, withdrawal, expiry, correction, or kill-switch state |
 | Provenance and corrections | Expose sources, versions, update links, and correction history | Destructively replace a published record |
 | Operations control | Observe health, enforce rate limits, and stop publication or playback | Edit editorial evidence silently |
 
@@ -62,7 +62,7 @@ Observability, audit, policy versioning, and kill-switch control span every stag
 | `StoryBrief` | eligible evidence set, factual boundaries, priority signals, intended audience/language, expiry time |
 | `ScriptVersion` | immutable script, sentence-to-evidence links, model/prompt versions, disclosure text, validation result |
 | `AudioAsset` | script version, voice configuration, audio fingerprint, duration, generation status |
-| `Bulletin` | ordered item versions, schedule, transcript, audio asset, publication state, disclosure, region/language |
+| `Bulletin` | ordered item versions, schedule, original publication time, 16-hour expiry, transcript, audio asset, publication/withdrawal state, disclosure, region/language |
 | `CorrectionRecord` | affected item/version, trigger evidence, corrected claims, replacement version, timestamps, audience notification state |
 | `AuditEvent` | actor/service, action, object and version, policy result, timestamp, correlation ID |
 
@@ -92,6 +92,9 @@ Data object names are conceptual, not implementation commitments.
 | Provenance or audit store unavailable | Stop new publication because traceability cannot be guaranteed |
 | Abnormal correction or rejection spike | Pause the affected topic/source segment and alert operations |
 | Kill switch activated | Stop new publication immediately; apply the configured policy to queued and currently playing content; record the action |
+| New scheduled edition held | Re-evaluate the latest valid edition on every request; replay it only inside its own 16-hour window with audible and visible disclosure |
+| Edition expired or no edition eligible | Show an unavailable status and serve no audio; never synthesize filler |
+| Critical published error | Withdraw immediately, invalidate cached playback, preserve immutable internal history, and start the correction/incident runbook |
 
 ## Corrections flow
 
@@ -105,6 +108,8 @@ Data object names are conceptual, not implementation commitments.
 
 Required signals include source freshness, cluster volume, independence count, rejection reasons, unsupported-claim detections, generation latency, publication latency, correction rate, playback health, and kill-switch state. Alerts must distinguish a local source failure from a safety-control failure.
 
+Playback authorization is a request-time decision. Asset URLs and caches must not outlive the current kill-switch, withdrawal, or 16-hour expiry state. See the [bulletin lifecycle policy](BULLETIN_LIFECYCLE.md).
+
 The kill switch must support at least a global publication stop. Segment-level controls for a source, topic, language, or region may be added, but they must fail closed and leave an audit record.
 
 ## Architecture decisions still open
@@ -112,7 +117,7 @@ The kill switch must support at least a global publication stop. Segment-level c
 - Processing and storage technologies.
 - Model and text-to-speech providers, including fallback policy.
 - Deployment topology and regional data boundaries.
-- Exact source-ingestion protocols and licensing enforcement.
+- Exact source-ingestion protocols and promotion of reviewed registry candidates to active evidence status.
 - Streaming protocol, content delivery, and player implementation.
-- Retention periods and tamper-evidence mechanism.
+- Counsel-approved retention periods and tamper-evidence mechanism.
 - Recovery objectives and scale targets.

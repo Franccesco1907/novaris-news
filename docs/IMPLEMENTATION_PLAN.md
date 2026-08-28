@@ -24,6 +24,8 @@ Durations are planning estimates, not deadlines. A phase advances only when its 
 
 ## Phase 0 — Foundations
 
+**Status:** documented, not complete and not launch-ready.
+
 **Objective:** turn product intent into explicit operating constraints before selecting an implementation stack.
 
 Work includes:
@@ -36,7 +38,7 @@ Work includes:
 - define privacy, correction, incident, retention, and audit requirements;
 - obtain Peruvian legal review for the counsel-required questions in the [Phase 0 foundations](PHASE_0_FOUNDATIONS.md).
 
-**Exit gate:** every Phase 0 checklist item is resolved or explicitly blocks launch. No source may enter a prototype without a registry record and documented usage status.
+**Exit gate:** every Phase 0 checklist item is resolved or explicitly blocks launch. A machine-readable candidate registry and private fixture plan exist, but connector verification, named accountable identities, procedure tests, counsel answers, and launch sign-off remain open. No real source may enter a prototype as evidence until its registry status is explicitly admitted.
 
 ## Phase 1 — Evidence-pipeline spike
 
@@ -156,4 +158,4 @@ These products help frame the market, but public pages often describe intended c
 
 ## Immediate next step
 
-Complete Phase 0 by populating and verifying the source registry, defining topic-specific thresholds and the bulletin lifecycle, and resolving accountable operation and counsel-required launch questions before implementation begins.
+Use the [Phase 1 synthetic fixtures](PHASE_1_FIXTURES.md) to begin private evidence-pipeline engineering while Phase 0 blockers are resolved. In parallel, test and legally admit selected connectors, assign accountable roles, exercise the correction/privacy/kill-switch procedures, and obtain counsel/authority decisions before any public or real-source launch.

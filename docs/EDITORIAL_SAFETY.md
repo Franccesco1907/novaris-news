@@ -39,7 +39,7 @@ An item may proceed only when:
 7. generated context, causal language, and certainty do not exceed the evidence;
 8. provenance and policy decisions are available for audit and audience display.
 
-Exact corroboration-count and freshness thresholds remain to be calibrated by topic and risk. Until then, the service must remain non-production. Insufficient evidence produces `hold` while resolution remains possible and `reject` when the applicable evidence window or policy cannot be satisfied. Failure of source-rights, provenance, or policy evaluation stops the affected publication path.
+Initial deterministic corroboration and source-product freshness rules are defined in the [topic evidence policies](TOPIC_EVIDENCE_POLICIES.md). They remain non-production until tested. Insufficient evidence produces `hold` while resolution remains possible and `reject` when the applicable evidence window or policy cannot be satisfied. Failure of source-rights, provenance, or policy evaluation stops the affected publication path.
 
 ## High-risk topics
 
@@ -82,6 +82,8 @@ High-risk handling must require authoritative primary information, apply any add
 5. Replace or withdraw audio that could cause ongoing harm, while retaining an internal audit artifact.
 6. Include the correction in a later bulletin when the original claim had meaningful audience reach or risk.
 
+Critical errors withdraw public playback immediately while preserving the immutable internal audit record. Correction, legal rectification, privacy, security, and consumer cases use separate traceable channels defined in the [corrections and incidents runbook](CORRECTIONS_AND_INCIDENTS.md).
+
 ## Defamation, privacy, and abuse safeguards
 
 - Avoid naming private individuals unless identity is necessary, well-supported, and permitted by policy.
@@ -115,9 +117,12 @@ Resumption requires the blocking condition to be resolved, affected items to be 
 
 - Launch jurisdiction and legal/editorial review process.
 - Source licensing and complaint/takedown procedures.
-- Topic-specific corroboration, freshness, and risk thresholds.
-- Definition of material claim and material correction.
+- Phase 1 validation and launch approval of the documented topic-specific corroboration, freshness, and risk thresholds.
+- Named legal entity, responsible editor/operator, Peru service address, privacy/security owners, and kill-switch primary/backup.
 - Incident owner, escalation path, and kill-switch authority.
 - Audit sampling method and launch-quality thresholds.
-- Retention and privacy rules for source, audience, and operational data.
+- Counsel-approved retention periods and tested privacy/security procedures for source, audience, and operational data.
+- Source connector admission evidence and Phase 1 fixture results.
 - Policy-change approval and versioning process.
+
+The approved [bulletin lifecycle](BULLETIN_LIFECYCLE.md) permits replay only until 16 hours after original publication, with audible and visible replay disclosure. Eligibility is evaluated per request; expired or withdrawn editions show an unavailable status and serve no audio, never filler.

@@ -2,7 +2,7 @@
 
 ## Status
 
-**IN PROGRESS — started 2026-08-28.**
+**DOCUMENTED BUT INCOMPLETE — started 2026-08-28. NOT LAUNCH-READY.**
 
 Phase 0 defines the constraints under which Novaris News may be designed and tested. It is not legal advice, and it does not declare the product compliant. Peruvian counsel and, where applicable, the relevant authorities must confirm the open legal questions before public launch.
 
@@ -24,10 +24,23 @@ Phase 0 defines the constraints under which Novaris News may be designed and tes
 | Disclosure | AI involvement must be disclosed visibly and audibly |
 | Confidence display | No public numerical confidence score until the method is calibrated and validated |
 | Failure principle | Remain silent, hold, or reject rather than improvise when evidence is insufficient |
+| Bulletin lifecycle | Replay the latest valid edition only inside 16 hours of its original publication; disclose replay audibly and visibly; withdraw critical errors immediately; show an unavailable status and serve no audio after expiry |
 
 Autonomy describes the normal publication flow. It does not remove legal responsibility, human accountability, incident response, or the operator's ability to stop and correct the system.
 
-## Verified requirements baseline
+## Foundation artifacts
+
+| Artifact | Status |
+| --- | --- |
+| [Bulletin lifecycle](BULLETIN_LIFECYCLE.md) | Approved policy; tests pending |
+| [Topic evidence policies](TOPIC_EVIDENCE_POLICIES.md) | Initial deterministic thresholds; Phase 1 validation pending |
+| [Source registry](../config/source-registry.yaml) | Candidate records only; no active connector |
+| [Corrections and incidents](CORRECTIONS_AND_INCIDENTS.md) | Runbook documented; identities and exercises pending |
+| [Privacy and retention](PRIVACY_AND_RETENTION.md) | Baseline/template documented; inventory, periods, owners, and tests pending |
+| [Legal review checklist](LEGAL_REVIEW_CHECKLIST.md) | Official evidence and blockers documented; written answers pending |
+| [Phase 1 fixtures](PHASE_1_FIXTURES.md) | Cases specified; harness and results pending |
+
+## Official-source requirements baseline
 
 The following requirements are derived from official Peruvian sources. They are a product-design baseline, not a final legal interpretation.
 
@@ -57,13 +70,13 @@ Article 2, sections 4 and 7 of the [Political Constitution of Peru](https://www.
 
 ### Personal data
 
-[Law 29733](https://www.gob.pe/institucion/congreso-de-la-republica/normas-legales/243470-29733) and its updated regulation, [Supreme Decree 016-2024-JUS](https://cdn.www.gob.pe/uploads/document/file/7568330/6426760-decreto-supremo-n-016-2024-jus-reglamento-de-la-ley-n-29733-ley-de-proteccion-de-datos-personales-publicado-nov-2024.pdf), govern personal-data processing. The availability of information from public sources does not eliminate proportionality, security, or data-subject-rights analysis; incident duties and data-bank inventory or registration may apply.
+[Law 29733](https://www.gob.pe/institucion/congreso-de-la-republica/normas-legales/243470-29733) and its updated regulation, [Supreme Decree 016-2024-JUS](https://www.gob.pe/institucion/anpd/normas-legales/6554453-16-2024-jus), govern personal-data processing. The availability of information from public sources does not eliminate proportionality, security, or data-subject-rights analysis; incident duties and data-bank inventory or registration may apply.
 
 **Product requirement:** minimize listener and source-subject data; document purposes and retention; secure operational and audience data; provide rights-request and incident workflows; and determine whether any personal-data banks require registration.
 
 ### AI governance
 
-[Supreme Decree 115-2025-PCM](https://busquedas.elperuano.pe/dispositivo/NL/2436426-1), which regulates Peru's AI law, establishes principles and obligations involving transparency, accountability, privacy, copyright, and human supervision.
+[Supreme Decree 115-2025-PCM](https://www.gob.pe/institucion/pcm/normas-legales/7133522-115-2025-), which regulates Peru's AI law, establishes principles and obligations involving transparency, accountability, privacy, copyright, and human supervision.
 
 **Product requirement:** identify AI-generated content, document accountable roles and system limitations, preserve auditability, assess the final use-case risk classification, and ensure an authorized person can stop or correct the system. Human supervision does not necessarily mean routine prepublication approval, but counsel must confirm the control model for this use case.
 
@@ -73,11 +86,11 @@ Peru's current electoral rules include specific restrictions for publishing elec
 
 **Product requirement:** election-survey embargoes, required metadata, attribution, and other time-based restrictions must be implemented as deterministic, versioned policy rules. They must not depend only on prompt instructions.
 
-### Internet-radio authorization
+### Internet-radio classification
 
-[Law 28278, the Radio and Television Law](https://leyes.congreso.gob.pe/Documentos/Leyes/28278.pdf), regulates services that use the radio spectrum. An internet-only audio service appears to fall outside terrestrial spectrum authorization, but this interpretation must be confirmed with Peruvian counsel and, if necessary, the Ministry of Transport and Communications before launch.
+MTC publishes authorization material for open-signal radio/television ([overview](https://www.gob.pe/institucion/mtc/noticias/1174227-mtc-quieres-brindar-servicios-de-radio-o-television-conoce-como-obtener-la-autorizacion), [procedure](https://www.gob.pe/institucion/mtc/informes-publicaciones/5652877-procedimiento-para-obtener-autorizacion-para-la-prestacion-de-un-servicio-de-radiodifusion-persona-natural)) and a [value-added service registry](https://www.gob.pe/22829-registro-para-servicio-de-valor-anadido). An internet-only service on third-party infrastructure reasonably appears distinct from terrestrial broadcasting, but these sources do not expressly classify the proposed service.
 
-**Product requirement:** the MVP must remain internet-only unless the required broadcast authorization is confirmed. Distribution architecture must not silently expand into regulated spectrum use.
+**Product requirement:** obtain written MTC/counsel classification for the MVP and for later changes such as 24/7 delivery, apps, subscriptions, advertising, own CDN, or FM. The MVP remains internet-only and public launch remains blocked until classification is documented.
 
 ## Recommended controls
 
@@ -100,7 +113,7 @@ These controls translate the baseline into an autonomous operating model. Final 
 
 ## High-risk policy areas
 
-Before any public beta, define versioned rules for:
+Before any currently excluded or high-risk area is enabled, define and validate versioned rules for:
 
 - elections, voting procedures, surveys, and political violence;
 - armed conflict, terrorism, and rapidly changing security events;
@@ -133,7 +146,7 @@ Every discovery or evidence source needs a record. Discovery-only status does no
 | `independence_group` | Known owner, wire, syndication, or common-origin grouping |
 | `topic_risk_tier` | Permitted topics and any topic-specific restrictions |
 | `verification_date` | Date on which identity, terms, and endpoint were last checked |
-| `status` | `proposed`, `discovery_only`, `approved_evidence`, `suspended`, `revoked`, or `expired` |
+| `status` | `pending_technical_and_legal_review`, `pending_rights`, `discovery_only`, `approved_evidence`, `suspended`, `revoked`, or `expired` |
 
 Example skeleton:
 
@@ -152,7 +165,7 @@ rate_limits: ""
 independence_group: ""
 topic_risk_tier: []
 verification_date: "YYYY-MM-DD"
-status: "proposed"
+status: "pending_rights"
 ```
 
 ## Confirmed source and evidence policy
@@ -169,26 +182,26 @@ Multiple URLs do not imply independent evidence. Reports with a shared owner, wi
 
 Every material claim requires an admitted `E1` source acting within its documented authority. Topic policy may additionally require one or more admitted `E2` sources from distinct independence groups. Missing or expired rights evidence, unknown attribution, or an unverified endpoint prevents admission. Insufficient evidence or an unresolved material contradiction produces `hold` while resolution remains possible and `reject` when the evidence window or applicable policy cannot be satisfied. A source-rights, provenance, or policy-service failure stops the affected publication path.
 
-This policy does not approve any named source or claim that its use is legally cleared. Registry population and source-by-source verification remain open work.
+The machine-readable [`source-registry.yaml`](../config/source-registry.yaml) now records official candidates and rights evidence. Every evidence candidate remains `pending_technical_and_legal_review`; useful but unclear sources remain `pending_rights` or `discovery_only`. The registry is not an approval: endpoint tests, dated terms snapshots with content hashes, rights/attribution review, revision handling, and explicit promotion remain open.
 
 ## Open product decisions
 
-The source and evidence policy is confirmed. Populate and verify the registry before using any source in Phase 1 fixtures.
+The source and evidence policy, lifecycle, initial topic thresholds, and synthetic fixture plan are documented. Real-source admission and accountable operations remain open.
 
 | Decision | Required output |
 | --- | --- |
-| Source registry | Named entries, source-by-source rights evidence, permitted uses, verification dates, review frequency, suspension, and revocation rules |
-| Topic thresholds | Required `E2` corroboration counts, freshness windows, and topic-specific `hold`, `reject`, or `stop` outcomes |
-| High-risk participation | Whether politics, elections, public safety, health, crime, conflict, and finance appear in the first private evaluation beyond the confirmed exclusions |
-| Bulletin lifecycle | Freshness window, replay behavior, retention period, and replacement or withdrawal rules |
-| Responsible operation | Named publisher/operator role, kill-switch authority, escalation backup, and service coverage hours |
+| Source admission | Endpoint tests, terms snapshot/hash, source-specific legal/editorial approval, review frequency, suspension, and revocation evidence |
+| Topic thresholds | Phase 1 validation and later calibration of the documented deterministic thresholds |
+| High-risk participation | Whether any high-risk subcategory is evaluated privately beyond the approved launch categories; the confirmed output exclusions remain prohibited |
+| Retention | Counsel-approved periods and deletion methods for every source, audit, audience, request, and incident data class |
+| Responsible operation | Named publisher/operator role, kill-switch authority, escalation backup, service coverage hours, and approved maximum withdrawal enforcement latency |
 | Corrections | Public address, intake ownership, response workflow, notification method, and retention |
 | Data | Audience analytics scope, consent model, retention periods, data-bank inventory, and security owner |
 | Business model | Whether advertising, sponsorship, or subscriptions exist and how they remain isolated from editorial ranking |
 
-### Recommended starting point for the next decision
+### Immediate execution priority
 
-Define the bulletin lifecycle: freshness window, replay behavior, retention period, and replacement or withdrawal rules. This decision determines whether a valid edition remains playable when the next scheduled edition is held.
+Build the private synthetic Phase 1 harness while independently closing Phase 0 launch blockers: admit selected connectors, assign accountable identities, test the runbooks, and obtain written counsel/authority answers.
 
 ## Counsel-required questions
 
@@ -213,14 +226,18 @@ Before public launch, obtain written advice or authoritative confirmation for:
 - [x] Initial bulletin cadence, duration, and time zone are approved.
 - [x] Initial category set and deferred high-risk categories are approved.
 - [x] Source tiers, evidence admission, independence grouping, contradiction handling, and fail-closed outcomes are approved.
-- [ ] Bulletin freshness, replay, retention, replacement, and withdrawal policies are approved.
-- [ ] A source registry exists with rights evidence for every Phase 1 input.
-- [ ] Topic-specific evidence, freshness, contradiction, and stop rules are approved for the Phase 1 categories.
+- [x] Bulletin freshness, replay, replacement, withdrawal, and no-filler policies are documented; legal retention remains open.
+- [x] A machine-readable source candidate registry records rights evidence and blocking status for Phase 1 planning.
+- [x] Initial topic-specific evidence, freshness, contradiction, shared-origin, and stop rules are documented.
 - [ ] Responsible publisher/operator roles, rectification address, kill-switch authority, and incident escalation are assigned.
-- [ ] Correction, complaint, withdrawal, and rectification procedures are documented and tested.
-- [ ] Privacy inventory, retention schedule, security owner, and incident procedure are documented.
-- [ ] Counsel-required questions have written answers or explicit launch blockers.
-- [ ] Phase 1 fixtures and success criteria reflect the approved categories and policies.
+- [ ] Correction, complaint, withdrawal, and rectification procedures are documented **and operationally tested**; documentation exists, tests do not.
+- [ ] Privacy inventory, counsel-approved retention schedule, security owner, and 48-hour incident procedure are approved and tested; templates exist, owners/tests do not.
+- [x] Counsel-required questions and explicit launch blockers are documented.
+- [x] Phase 1 synthetic/rights-cleared fixtures and expected outcomes reflect the approved categories and policies.
+- [ ] Selected source connectors pass endpoint, revision/tombstone, rate, terms-snapshot, rights, attribution, and final admission review.
+- [ ] MTC classification, AI risk classification, data-bank/transfer obligations, and applicable commercial duties are confirmed in writing.
+- [ ] Named operators pass rectification, withdrawal, privacy incident, and primary/backup kill-switch exercises.
+- [ ] Maximum active-playback withdrawal and kill-switch enforcement latency is approved, implemented, and tested.
 
 Phase 0 completes only when all unchecked items are resolved. Product experimentation may continue privately, but unresolved legal, source-rights, accountability, or safety items block public launch.
 
@@ -238,7 +255,9 @@ Phase 0 completes only when all unchecked items are resolved. Product experiment
 | 2026-08-28 | Publish two 5–10 minute bulletins daily at 08:00 and 18:00 `America/Lima` | Confirmed | A bounded schedule enables repeatable evidence and quality evaluation before continuous programming |
 | 2026-08-28 | Launch with a constrained general-news category set and explicit high-risk exclusions | Confirmed | The scope informs broadly while withholding outputs that lack deterministic safeguards |
 | 2026-08-28 | Use admitted official primary sources as the evidence base; allow rights-verified established media only as corroboration; keep aggregators and social networks discovery-only | Confirmed | Separates lead discovery from publication evidence and prevents repeated or unlicensed material from appearing as independent support |
+| 2026-08-28 | Replay a valid edition for at most 16 hours from original publication, disclose replay, withdraw critical errors, then show an unavailable status and serve no audio after expiry | Confirmed | Prevents stale or withdrawn content from becoming filler for a nominal 24/7 stream |
+| 2026-08-28 | Keep all initial registry connectors non-active until technical and legal admission evidence exists | Confirmed | Reusable-looking terms do not prove endpoint correctness, rights scope, or operational safety |
 
 ## Next decision
 
-Approve the bulletin lifecycle policy: freshness, replay, retention, replacement, and withdrawal. In parallel, populate and verify the source registry before creating Phase 1 evidence fixtures.
+Implement the private synthetic Phase 1 evidence harness. In parallel, close the unchecked accountable-identity, connector-admission, procedure-testing, counsel, authority, and retention blockers. Public or real-source publication remains prohibited.

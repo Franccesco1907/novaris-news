@@ -7,7 +7,7 @@ Novaris News is an early-stage concept for an autonomous, AI-run news service th
 
 ## Current status
 
-**Phase 0 — Foundations is in progress.** The MVP is Spanish-language, audio-first web radio for Peru and Latin America, covering major worldwide events relevant to that audience. It will publish two 5–10 minute bulletins daily at 08:00 and 18:00 `America/Lima`. The source and evidence policy is confirmed; registry population, accountable operating roles, and counsel-confirmed launch requirements remain open.
+**Phase 0 — Foundations is documented but incomplete.** The MVP is Spanish-language, audio-first web radio for Peru and Latin America, covering major worldwide events relevant to that audience. It will publish two 5–10 minute bulletins daily at 08:00 and 18:00 `America/Lima`. Lifecycle, source-registry, topic-policy, correction, privacy, legal-review, and fixture baselines now exist, but every connector is non-active, accountable identities are unassigned, procedures are untested, and counsel/authority launch questions remain open.
 
 ## MVP at a glance
 
@@ -37,6 +37,13 @@ Publication evidence must originate from an admitted official primary source. An
 | [Product requirements](docs/PRODUCT_REQUIREMENTS.md) | MVP boundaries, requirements, acceptance criteria, metrics, and roadmap |
 | [Logical architecture](docs/ARCHITECTURE.md) | Technology-independent system boundaries, data flow, and failure behavior |
 | [Editorial safety](docs/EDITORIAL_SAFETY.md) | Automated evidence, disclosure, provenance, correction, and stop rules |
+| [Bulletin lifecycle](docs/BULLETIN_LIFECYCLE.md) | Sixteen-hour replay window, request-time eligibility, withdrawal, and silence rules |
+| [Topic evidence policies](docs/TOPIC_EVIDENCE_POLICIES.md) | Deterministic category thresholds, freshness, independence, and fail-closed outcomes |
+| [Source registry](config/source-registry.yaml) | Machine-readable non-production source candidates, rights evidence, and admission blockers |
+| [Corrections and incidents](docs/CORRECTIONS_AND_INCIDENTS.md) | Severity model, rectification baseline, withdrawal, escalation, and recovery runbook |
+| [Privacy and retention](docs/PRIVACY_AND_RETENTION.md) | Data inventory, security document, incident procedure, and unresolved retention schedule |
+| [Legal review checklist](docs/LEGAL_REVIEW_CHECKLIST.md) | Confirmed official sources, product inferences, and counsel/authority blockers |
+| [Phase 1 fixtures](docs/PHASE_1_FIXTURES.md) | Synthetic and rights-cleared cases with expected eligible/hold/reject/stop outcomes |
 
 ## Principles
 
@@ -48,4 +55,4 @@ Publication evidence must originate from an admitted official primary source. An
 
 ## Open decisions
 
-The immediate work is to populate and verify the source registry, then approve bulletin lifecycle and topic-specific evidence thresholds. Responsible publisher/operator roles, correction and privacy procedures, counsel-confirmed Peruvian obligations, monetization, and the implementation stack also remain open. See the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist).
+The immediate work is to test and legally admit selected connectors, assign responsible publisher/operator/privacy/security roles, exercise correction and incident procedures, and obtain the counsel/authority answers listed in the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist). The documented foundation permits private synthetic-fixture engineering; it does **not** permit public launch or real-source publication.
