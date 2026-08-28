@@ -1,0 +1,15 @@
+{
+  "name": "@novaris/phase1-harness",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@novaris/editorial-policy": "workspace:*",
+    "@novaris/shared-contracts": "workspace:*"
+  }
+}

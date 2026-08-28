@@ -1,0 +1,24 @@
+{
+  "name": "novaris-news",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "build": "pnpm --recursive run build",
+    "format:check": "prettier --check \"apps/**/*.{ts,json}\" \"packages/**/*.{ts,json}\" \"*.{json,ts}\" pnpm-workspace.yaml",
+    "harness": "pnpm build && pnpm --filter @novaris/phase1-harness start",
+    "test": "pnpm build && vitest run",
+    "test:coverage": "pnpm build && vitest run --coverage",
+    "typecheck": "pnpm build && pnpm --recursive run typecheck"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "@vitest/coverage-v8": "4.1.11",
+    "prettier": "3.9.6",
+    "typescript": "7.0.2",
+    "vitest": "4.1.11"
+  }
+}

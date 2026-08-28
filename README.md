@@ -3,11 +3,11 @@
 Novaris News is an early-stage concept for an autonomous, AI-run news service that helps a global audience follow important events. The MVP is an audio-first web radio that produces sourced news bulletins without a routine human approval step.
 
 > [!WARNING]
-> This repository contains product and architecture planning only. Novaris News is not production-ready and must not be treated as a reliable news source.
+> This repository contains planning and a private, synthetic Phase 1 engineering spike. Novaris News is not production-ready and must not be treated as a reliable news source.
 
 ## Current status
 
-**Phase 0 — Foundations is documented but incomplete.** The MVP is Spanish-language, audio-first web radio for Peru and Latin America, covering major worldwide events relevant to that audience. It will publish two 5–10 minute bulletins daily at 08:00 and 18:00 `America/Lima`. Lifecycle, source-registry, topic-policy, correction, privacy, legal-review, and fixture baselines now exist, but every connector is non-active, accountable identities are unassigned, procedures are untested, and counsel/authority launch questions remain open.
+**Phase 1 — Evidence-pipeline spike has started while Phase 0 launch blockers remain open.** The first private vertical slice validates synthetic evidence-admission inputs and produces deterministic `eligible`, `hold`, `reject`, or `stop` decisions. It has no real connectors, database, model call, audio, scheduler, public API, or publication path, and it does not yet cover all 24 fixture cases.
 
 ## MVP at a glance
 
@@ -45,6 +45,20 @@ Publication evidence must originate from an admitted official primary source. An
 | [Legal review checklist](docs/LEGAL_REVIEW_CHECKLIST.md) | Confirmed official sources, product inferences, and counsel/authority blockers |
 | [Phase 1 fixtures](docs/PHASE_1_FIXTURES.md) | Synthetic and rights-cleared cases with expected eligible/hold/reject/stop outcomes |
 
+## Development quick path
+
+The current workspace requires Node.js 24 and uses the package manager version pinned in `package.json`.
+
+```bash
+nvm use
+corepack pnpm install --frozen-lockfile
+corepack pnpm typecheck
+corepack pnpm test
+corepack pnpm harness
+```
+
+The harness is deterministic and private. It calls no external API or language model and exits nonzero when an implemented synthetic case disagrees with its expected outcome.
+
 ## Principles
 
 1. **Autonomous does not mean ungoverned.** Publication has no routine human approval gate, but automated editorial and safety gates are mandatory.
@@ -55,4 +69,4 @@ Publication evidence must originate from an admitted official primary source. An
 
 ## Open decisions
 
-The immediate work is to test and legally admit selected connectors, assign responsible publisher/operator/privacy/security roles, exercise correction and incident procedures, and obtain the counsel/authority answers listed in the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist). The documented foundation permits private synthetic-fixture engineering; it does **not** permit public launch or real-source publication.
+The immediate engineering work is to expand the evidence pipeline toward complete fixture coverage, evidence-package assembly, and claim lineage without admitting real sources prematurely. In parallel, connector admission, responsible roles, procedure tests, and the counsel/authority questions in the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist) remain mandatory. Nothing in the current slice permits public launch or real-source publication.

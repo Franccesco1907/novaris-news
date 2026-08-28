@@ -1,10 +1,48 @@
-# Novaris News logical architecture
+# Novaris News architecture
 
 ## Architecture outcome
 
-The system is a policy-gated publishing pipeline. Evidence and provenance travel with a story from ingestion through playback; generation cannot bypass corroboration, and uncertainty in a critical control stops publication.
+The system is a policy-gated modular monolith with Hexagonal Architecture. Evidence and provenance travel with a story from ingestion through playback; generation cannot bypass corroboration, and uncertainty in a critical control stops publication.
 
-This design is technology-agnostic. Component products, programming languages, cloud providers, data stores, and model vendors remain open decisions.
+Phase 1 uses Node.js 24, TypeScript, pnpm workspaces, Zod contracts, and Vitest. PostgreSQL is the future authoritative store behind ports; no database or external service is connected in the first slice. Model, text-to-speech, cloud, and deployment vendors remain open decisions.
+
+## Approved physical architecture
+
+The implementation begins as one deployable system with explicit package boundaries. Microservices, Redis, Kafka, real source connectors, audio, scheduling, a public API, and deployment configuration are outside the first Phase 1 slice.
+
+```text
+novaris-news/
+├── apps/
+│   └── phase1-harness/       # Private deterministic fixture runner
+├── packages/
+│   ├── shared-contracts/     # Validated boundary inputs and outputs
+│   └── editorial-policy/     # Pure fail-closed evidence admission rules
+├── config/                   # Non-active source candidates
+└── docs/                     # Product, policy, and architecture contracts
+```
+
+Only packages with working behavior exist. The planned `source-catalog`, `evidence-pipeline`, `script-generation`, `claim-validation`, and `audit` boundaries will be added as executable vertical slices—not as empty placeholders.
+
+```text
+phase1-harness -> editorial-policy -> shared-contracts
+```
+
+- Domain policy is pure and has no database, network, model, or framework dependency.
+- Inputs and decisions are validated at boundaries with versioned Zod schemas.
+- The private harness supplies synthetic data through the same public policy function a future adapter will call.
+- Future PostgreSQL persistence will implement domain-owned ports. Domain packages must not import a database client.
+- Future AI and text-to-speech providers will be replaceable adapters. A generator may receive only an admitted `EvidencePackage`.
+
+| Area | First Phase 1 slice | Later Phase 1 or Phase 2 |
+| --- | --- | --- |
+| Inputs | Authored synthetic cases | Rights-cleared connectors after admission |
+| Admission | Core fail-closed evidence rules | Full topic-policy and revision/tombstone coverage |
+| Generation | Not implemented | Evidence-package assembly, bounded generation, claim validation |
+| Persistence | In-memory values only | PostgreSQL through ports, immutable audit records |
+| Runtime | Private deterministic CLI | Internal orchestration, then private bulletin pipeline |
+| Publication/audio | Not implemented | Phase 2 only |
+
+The first slice proves a narrow policy boundary. It does not satisfy all 24 fixture cases or the Phase 1 exit gate.
 
 ## Logical pipeline
 
@@ -66,7 +104,7 @@ Observability, audit, policy versioning, and kill-switch control span every stag
 | `CorrectionRecord` | affected item/version, trigger evidence, corrected claims, replacement version, timestamps, audience notification state |
 | `AuditEvent` | actor/service, action, object and version, policy result, timestamp, correlation ID |
 
-Data object names are conceptual, not implementation commitments.
+Data object names remain conceptual unless implemented in a versioned contract. The first slice implements only the evidence-admission input and decision boundaries.
 
 ## State and trust boundaries
 
@@ -114,7 +152,8 @@ The kill switch must support at least a global publication stop. Segment-level c
 
 ## Architecture decisions still open
 
-- Processing and storage technologies.
+- PostgreSQL schema, hosting, migration strategy, and tamper-evidence design.
+- Internal orchestration and transaction boundaries after the pure policy slice.
 - Model and text-to-speech providers, including fallback policy.
 - Deployment topology and regional data boundaries.
 - Exact source-ingestion protocols and promotion of reviewed registry candidates to active evidence status.

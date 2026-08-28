@@ -42,6 +42,8 @@ Work includes:
 
 ## Phase 1 — Evidence-pipeline spike
 
+**Status:** in progress. The first private vertical slice implements validated evidence-admission contracts, a pure deterministic policy, and a synthetic CLI harness. It does not yet assemble an evidence package, generate or validate a script, persist audit lineage, or cover all 24 fixtures.
+
 **Objective:** prove the informational core without audio, a public site, or continuous scheduling.
 
 ```text
@@ -65,6 +67,18 @@ Requirements:
 - inputs, policies, prompts, model versions, outputs, and decisions must be reproducible and auditable.
 
 **Exit gate:** the spike reliably creates an evidence package and a grounded script from test fixtures, rejects unsupported material claims, and preserves sentence-to-evidence lineage.
+
+### First vertical slice
+
+The current slice deliberately stops at the first trust boundary:
+
+1. validate a synthetic evidence-admission request;
+2. count independence by upstream origin group rather than URL;
+3. apply fail-closed rights, provenance, topic, and dependency rules;
+4. emit a validated machine-readable decision; and
+5. compare implemented synthetic cases in a deterministic private harness.
+
+This is progress toward the Phase 1 exit gate, not evidence that the gate has passed.
 
 ## Phase 2 — Reproducible bulletin
 
@@ -158,4 +172,4 @@ These products help frame the market, but public pages often describe intended c
 
 ## Immediate next step
 
-Use the [Phase 1 synthetic fixtures](PHASE_1_FIXTURES.md) to begin private evidence-pipeline engineering while Phase 0 blockers are resolved. In parallel, test and legally admit selected connectors, assign accountable roles, exercise the correction/privacy/kill-switch procedures, and obtain counsel/authority decisions before any public or real-source launch.
+Extend the private slice from admission decisions to versioned evidence-package assembly and audit lineage, then implement the remaining [Phase 1 synthetic fixtures](PHASE_1_FIXTURES.md). Real connectors stay blocked until their source-registry admission work passes; accountable roles, procedure tests, and counsel/authority decisions remain mandatory before any public launch.
