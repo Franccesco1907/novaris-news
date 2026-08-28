@@ -2,11 +2,11 @@
 
 ## Product definition
 
-Novaris News is an autonomous, audio-first news service for a broad global audience. It turns corroborated reporting from approved sources into short, sourced, AI-narrated bulletins. Routine publication does not require human approval; automated evidence and safety gates decide whether an item may proceed.
+Novaris News is an autonomous, audio-first news service launching in Spanish for Peru and Latin America, with coverage of major worldwide events relevant to that audience. It turns corroborated reporting from approved sources into short, sourced, AI-narrated bulletins. Routine publication does not require human approval; automated evidence and safety gates decide whether an item may proceed.
 
 ## Goals
 
-- Help listeners understand major events without continuously monitoring many outlets.
+- Help listeners in Peru and Latin America understand major regional and worldwide events without continuously monitoring many outlets.
 - Produce timely, concise audio bulletins across politics, economy, technology, science, climate, public safety, emergencies, and major global events.
 - Make the AI origin, supporting sources, and later corrections clear to the audience.
 - Operate autonomously while failing closed when evidence or critical controls are insufficient.
@@ -84,7 +84,7 @@ Novaris News is an autonomous, audio-first news service for a broad global audie
 - **Privacy:** avoid collecting listener data not required for playback and operations; redact unnecessary personal data from internal artifacts.
 - **Accessibility:** playback controls and written story summaries must support keyboard and assistive-technology use; audio content needs a readable transcript.
 - **Observability:** each pipeline stage must emit structured status, latency, policy outcome, and error signals.
-- **Internationalization:** data objects must support multiple languages even if the MVP launches with one.
+- **Internationalization:** the MVP shall publish in Spanish; data objects must support additional languages without weakening evidence or safety rules.
 
 ## MVP acceptance criteria
 
@@ -129,7 +129,7 @@ These metrics assess process quality. They must not be presented as a universal 
 
 ## Open decisions
 
-1. Launch country, legal jurisdiction, and target languages.
+1. Final legal jurisdiction and counsel-confirmed requirements for the Peru/Latin America launch.
 2. Source catalog, licensing terms, and permitted uses of article content.
 3. Initial bulletin cadence, duration, and retention period.
 4. Distribution surface and the precise meaning of a future 24/7 service.
@@ -140,10 +140,13 @@ These metrics assess process quality. They must not be presented as a universal 
 
 ## Phased roadmap
 
+The [implementation plan](IMPLEMENTATION_PLAN.md) defines delivery work and exit gates; the [Phase 0 foundations](PHASE_0_FOUNDATIONS.md) track the product, legal, and editorial decisions required before implementation. This summary preserves the six-phase terminology without replacing those documents.
+
 | Phase | Outcome |
 | --- | --- |
-| 0 — Validation | Resolve launch jurisdiction, source rights, evidence policy, and prototype the pipeline on non-public output. |
-| 1 — MVP | Publish scheduled, sourced audio bulletins with disclosure, provenance, corrections, monitoring, and kill switch. |
-| 2 — Continuous service | Expand cadence toward continuous programming after reliability and editorial metrics meet defined thresholds. |
-| 3 — Audience choice | Add topic channels and configurable delivery tone without changing evidence standards. |
-| 4 — Rich media | Evaluate video presenters and television distribution with additional disclosure and safety controls. |
+| 0 — Foundations | Resolve operating rules, source rights, cadence, categories, accountable roles, and public-launch blockers. |
+| 1 — Evidence-pipeline spike | Prove evidence packages, grounded scripts, rejection behavior, and claim-level lineage on private fixtures. |
+| 2 — Reproducible bulletin | Produce a private, versioned audio bulletin with transcript, sources, disclosure, and reproducible lineage. |
+| 3 — Shadow operation | Run private bulletins and audit sufficient claims to measure whether the public-beta gates are satisfied. |
+| 4 — Public beta | Publish a constrained Spanish general-news service for Peru and Latin America, including relevant worldwide events. |
+| 5 — Continuous operation | Increase cadence only after quality gates pass, then evaluate audience choice, richer formats, and additional languages. |

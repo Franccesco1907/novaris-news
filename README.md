@@ -7,7 +7,7 @@ Novaris News is an early-stage concept for an autonomous, AI-run news service th
 
 ## Current status
 
-**Discovery and requirements definition.** No implementation stack, launch market, source-licensing model, or operating jurisdiction has been selected.
+**Phase 0 — Foundations is in progress.** The MVP is Spanish-language, audio-first web radio for Peru and Latin America, covering major worldwide events relevant to that audience. The initial cadence, category set, source-licensing model, accountable operating roles, and counsel-confirmed launch requirements remain open.
 
 ## MVP at a glance
 
@@ -28,6 +28,8 @@ The MVP is **not** a full AI television channel and does not promise uninterrupt
 
 | Document | Purpose |
 | --- | --- |
+| [Implementation plan](docs/IMPLEMENTATION_PLAN.md) | Phased delivery sequence, measurable gates, and comparable product signals |
+| [Phase 0 foundations](docs/PHASE_0_FOUNDATIONS.md) | Confirmed decisions, Peru requirements baseline, source registry, open legal questions, and exit checklist |
 | [Product requirements](docs/PRODUCT_REQUIREMENTS.md) | MVP boundaries, requirements, acceptance criteria, metrics, and roadmap |
 | [Logical architecture](docs/ARCHITECTURE.md) | Technology-independent system boundaries, data flow, and failure behavior |
 | [Editorial safety](docs/EDITORIAL_SAFETY.md) | Automated evidence, disclosure, provenance, correction, and stop rules |
@@ -42,4 +44,4 @@ The MVP is **not** a full AI television channel and does not promise uninterrupt
 
 ## Open decisions
 
-The launch country and languages, permitted and licensed sources, legal jurisdiction, monetization, bulletin cadence, path to 24/7 programming, and implementation stack remain undecided.
+The immediate decision is the initial bulletin cadence and permitted category set. Source rights, responsible publisher/operator roles, correction and privacy procedures, counsel-confirmed Peruvian obligations, monetization, and the implementation stack also remain open. See the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist).
