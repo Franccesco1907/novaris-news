@@ -7,7 +7,7 @@ Novaris News is an early-stage concept for an autonomous, AI-run news service th
 
 ## Current status
 
-**Phase 1 — Evidence-pipeline spike has started while Phase 0 launch blockers remain open.** The first private vertical slice validates synthetic evidence-admission inputs and produces deterministic `eligible`, `hold`, `reject`, or `stop` decisions. It has no real connectors, database, model call, audio, scheduler, public API, or publication path, and it does not yet cover all 24 fixture cases.
+**Phase 1 — Evidence-pipeline spike has started while Phase 0 launch blockers remain open.** The private slices validate synthetic evidence-admission inputs, produce deterministic `eligible`, `hold`, `reject`, or `stop` decisions, and assemble immutable content-addressed evidence packages for eligible cases. They have no real connectors, database, model call, audio, scheduler, public API, or publication path, and they do not yet cover all 24 fixture cases.
 
 ## MVP at a glance
 
@@ -69,4 +69,4 @@ The harness is deterministic and private. It calls no external API or language m
 
 ## Open decisions
 
-The immediate engineering work is to expand the evidence pipeline toward complete fixture coverage, evidence-package assembly, and claim lineage without admitting real sources prematurely. In parallel, connector admission, responsible roles, procedure tests, and the counsel/authority questions in the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist) remain mandatory. Nothing in the current slice permits public launch or real-source publication.
+The immediate engineering work is to expand the evidence pipeline toward complete fixture coverage, durable audit lineage, bounded script generation, and semantic claim validation without admitting real sources prematurely. In parallel, connector admission, responsible roles, procedure tests, and the counsel/authority questions in the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist) remain mandatory. Nothing in the current slice permits public launch or real-source publication.

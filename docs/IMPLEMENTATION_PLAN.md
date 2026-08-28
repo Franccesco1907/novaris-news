@@ -42,7 +42,7 @@ Work includes:
 
 ## Phase 1 — Evidence-pipeline spike
 
-**Status:** in progress. The first private vertical slice implements validated evidence-admission contracts, a pure deterministic policy, and a synthetic CLI harness. It does not yet assemble an evidence package, generate or validate a script, persist audit lineage, or cover all 24 fixtures.
+**Status:** in progress. The private vertical slices implement validated evidence-admission contracts, a pure deterministic policy, canonical immutable evidence-package assembly, and a synthetic CLI harness. They do not yet generate or validate a script, persist audit lineage, or cover all 24 fixtures.
 
 **Objective:** prove the informational core without audio, a public site, or continuous scheduling.
 
@@ -68,15 +68,17 @@ Requirements:
 
 **Exit gate:** the spike reliably creates an evidence package and a grounded script from test fixtures, rejects unsupported material claims, and preserves sentence-to-evidence lineage.
 
-### First vertical slice
+### Implemented vertical slices
 
-The current slice deliberately stops at the first trust boundary:
+The implemented slices stop before the generative boundary:
 
 1. validate a synthetic evidence-admission request;
 2. count independence by upstream origin group rather than URL;
 3. apply fail-closed rights, provenance, topic, and dependency rules;
 4. emit a validated machine-readable decision; and
-5. compare implemented synthetic cases in a deterministic private harness.
+5. compare implemented synthetic cases in a deterministic private harness;
+6. re-evaluate eligible decisions before evidence-package assembly; and
+7. bind immutable snapshots, origin roots, atomic claims, and structural evidence links into a canonical content-addressed package.
 
 This is progress toward the Phase 1 exit gate, not evidence that the gate has passed.
 

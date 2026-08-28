@@ -59,6 +59,20 @@ Fixtures assert either a prepublication evidence decision or a playback/correcti
 - Include revisions, deletions, and malformed metadata—not only happy paths.
 - Assert that rejected and discovery-only content is absent from generator inputs.
 
+## Implemented evidence-package cases
+
+The private harness and unit suite now exercise deterministic evidence-package assembly alongside the admission cases. These are engineering cases, not claims that the corresponding end-to-end core fixtures have passed.
+
+| ID | Assembly behavior |
+| --- | --- |
+| EP01–EP04 | Eligible assembly, non-eligible refusal, decision re-evaluation, and discovery exclusion |
+| EP05–EP07 | Claim-link requirements, unknown references, and duplicate identities |
+| EP08 | Current-affairs E1/E2 independence recomputed from terminal origin roots |
+| EP09–EP10 | Permutation-invariant identity, canonical bytes, deep freezing, and caller-input detachment |
+| EP11–EP12 | Snapshot consistency and missing-node, cyclic, or ambiguous origin-graph rejection |
+
+Package hashes prove byte identity, not factual truth, legal authorization, or semantic claim support. Semantic claim validation and durable audit persistence remain future Phase 1 work.
+
 ## Exit evidence
 
 Phase 1 cannot claim success until the harness proves:
@@ -69,4 +83,4 @@ Phase 1 cannot claim success until the harness proves:
 - replay and withdrawal decisions are enforced per playback request; and
 - audit reconstruction includes input fingerprints, rights evidence, policies, decisions, script/audio versions, and operator actions.
 
-The cases are defined but no harness or connector has been implemented or tested.
+A private synthetic harness is implemented and tested for the admission and evidence-package cases described above. Real connectors remain non-active, the broader F01–F24 exit evidence is incomplete, and the Phase 1 exit gate has not passed.

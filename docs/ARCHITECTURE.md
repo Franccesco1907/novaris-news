@@ -4,11 +4,11 @@
 
 The system is a policy-gated modular monolith with Hexagonal Architecture. Evidence and provenance travel with a story from ingestion through playback; generation cannot bypass corroboration, and uncertainty in a critical control stops publication.
 
-Phase 1 uses Node.js 24, TypeScript, pnpm workspaces, Zod contracts, and Vitest. PostgreSQL is the future authoritative store behind ports; no database or external service is connected in the first slice. Model, text-to-speech, cloud, and deployment vendors remain open decisions.
+Phase 1 uses Node.js 24, TypeScript, pnpm workspaces, Zod contracts, and Vitest. PostgreSQL is the future authoritative store behind ports; no database or external service is connected in the current slices. Model, text-to-speech, cloud, and deployment vendors remain open decisions.
 
 ## Approved physical architecture
 
-The implementation begins as one deployable system with explicit package boundaries. Microservices, Redis, Kafka, real source connectors, audio, scheduling, a public API, and deployment configuration are outside the first Phase 1 slice.
+The implementation begins as one deployable system with explicit package boundaries. Microservices, Redis, Kafka, real source connectors, audio, scheduling, a public API, and deployment configuration are outside the current Phase 1 slices.
 
 ```text
 novaris-news/
@@ -16,20 +16,23 @@ novaris-news/
 │   └── phase1-harness/       # Private deterministic fixture runner
 ├── packages/
 │   ├── shared-contracts/     # Validated boundary inputs and outputs
-│   └── editorial-policy/     # Pure fail-closed evidence admission rules
+│   ├── editorial-policy/     # Pure fail-closed evidence admission rules
+│   └── evidence-pipeline/    # Deterministic EvidencePackage assembly
 ├── config/                   # Non-active source candidates
 └── docs/                     # Product, policy, and architecture contracts
 ```
 
-Only packages with working behavior exist. The planned `source-catalog`, `evidence-pipeline`, `script-generation`, `claim-validation`, and `audit` boundaries will be added as executable vertical slices—not as empty placeholders.
+Only packages with working behavior exist. The planned `source-catalog`, `script-generation`, `claim-validation`, and `audit` boundaries will be added as executable vertical slices—not as empty placeholders.
 
 ```text
 phase1-harness -> editorial-policy -> shared-contracts
+phase1-harness -> evidence-pipeline -> shared-contracts
 ```
 
 - Domain policy is pure and has no database, network, model, or framework dependency.
 - Inputs and decisions are validated at boundaries with versioned Zod schemas.
 - The private harness supplies synthetic data through the same public policy function a future adapter will call.
+- Evidence-package assembly owns an admission-evaluator port. The harness adapts `editorial-policy`; `evidence-pipeline` does not import it.
 - Future PostgreSQL persistence will implement domain-owned ports. Domain packages must not import a database client.
 - Future AI and text-to-speech providers will be replaceable adapters. A generator may receive only an admitted `EvidencePackage`.
 
@@ -37,12 +40,13 @@ phase1-harness -> editorial-policy -> shared-contracts
 | --- | --- | --- |
 | Inputs | Authored synthetic cases | Rights-cleared connectors after admission |
 | Admission | Core fail-closed evidence rules | Full topic-policy and revision/tombstone coverage |
-| Generation | Not implemented | Evidence-package assembly, bounded generation, claim validation |
+| Evidence package | Canonically serialized, content-addressed, recursively frozen synthetic package | Persistence and broader fixture coverage |
+| Generation | Not implemented | Bounded generation and semantic claim validation |
 | Persistence | In-memory values only | PostgreSQL through ports, immutable audit records |
 | Runtime | Private deterministic CLI | Internal orchestration, then private bulletin pipeline |
 | Publication/audio | Not implemented | Phase 2 only |
 
-The first slice proves a narrow policy boundary. It does not satisfy all 24 fixture cases or the Phase 1 exit gate.
+The implemented slices prove policy admission and structural evidence-package assembly. They do not satisfy all 24 fixture cases or the Phase 1 exit gate.
 
 ## Logical pipeline
 
@@ -80,6 +84,7 @@ Observability, audit, policy versioning, and kill-switch control span every stag
 | Normalization | Extract canonical text, dates, entities, language, and fingerprints | Discard original provenance |
 | Deduplication and clustering | Group reports about the same event and identify shared upstream origins | Count syndication copies as independent corroboration |
 | Corroboration and risk gate | Evaluate evidence sufficiency, independence, freshness, contradictions, and topic risk | Generate prose or weaken a policy because a story is popular |
+| Evidence-package assembly | Re-evaluate admission, bind immutable snapshots and origin roots, validate structural claim links, and create a canonical content identity | Treat a structural link or fingerprint as proof that a claim is semantically true |
 | Prioritization | Rank eligible stories for public relevance, urgency, recency, and diversity | Admit rejected stories or optimize solely for engagement |
 | Script generation | Produce a concise bulletin script constrained to approved evidence | Add unsupported context, quotes, or certainty |
 | Claim validation | Map material claims to evidence and verify required disclosure | Repair missing evidence by inventing text |
@@ -104,7 +109,7 @@ Observability, audit, policy versioning, and kill-switch control span every stag
 | `CorrectionRecord` | affected item/version, trigger evidence, corrected claims, replacement version, timestamps, audience notification state |
 | `AuditEvent` | actor/service, action, object and version, policy result, timestamp, correlation ID |
 
-Data object names remain conceptual unless implemented in a versioned contract. The first slice implements only the evidence-admission input and decision boundaries.
+Data object names remain conceptual unless implemented in a versioned contract. The current code implements evidence-admission boundaries and a versioned `EvidencePackage` contract with immutable document, rights, provenance, origin-graph, atomic-claim, and evidence-link snapshots.
 
 ## State and trust boundaries
 

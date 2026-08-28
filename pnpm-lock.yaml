@@ -29,11 +29,20 @@ importers:
       '@novaris/editorial-policy':
         specifier: workspace:*
         version: link:../../packages/editorial-policy
+      '@novaris/evidence-pipeline':
+        specifier: workspace:*
+        version: link:../../packages/evidence-pipeline
       '@novaris/shared-contracts':
         specifier: workspace:*
         version: link:../../packages/shared-contracts
 
   packages/editorial-policy:
+    dependencies:
+      '@novaris/shared-contracts':
+        specifier: workspace:*
+        version: link:../shared-contracts
+
+  packages/evidence-pipeline:
     dependencies:
       '@novaris/shared-contracts':
         specifier: workspace:*

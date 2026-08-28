@@ -1,18 +1,24 @@
 import { syntheticCases } from "./cases.js";
+import { evidencePackageCases } from "./package-cases.js";
 import { runCases } from "./run-cases.js";
+import { runEvidencePackageCases } from "./run-package-cases.js";
 
-const result = runCases(syntheticCases);
+const admissionResult = runCases(syntheticCases);
+const packageResult = runEvidencePackageCases(evidencePackageCases);
+const failures = [...admissionResult.failures, ...packageResult.failures];
 
-for (const failure of result.failures) {
+for (const failure of failures) {
   console.error(
     `FAIL ${failure.id}: expected ${failure.expected}, received ${failure.received}`,
   );
 }
 
 console.log(
-  `Phase 1 slice: ${result.passed}/${syntheticCases.length} synthetic cases passed.`,
+  `Phase 1 slice: ${admissionResult.passed + packageResult.passed}/${
+    syntheticCases.length + evidencePackageCases.length
+  } synthetic cases passed.`,
 );
 
-if (result.failures.length > 0) {
+if (failures.length > 0) {
   process.exitCode = 1;
 }
