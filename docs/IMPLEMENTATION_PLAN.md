@@ -17,7 +17,7 @@ The differentiator is not synthetic narration. It is a defensible evidence chain
 | 1 — Evidence-pipeline spike | 1 week | Produce evidence packages and grounded scripts from approved inputs | None |
 | 2 — Reproducible bulletin | 1 week | Generate a versioned bulletin with audio, transcript, sources, disclosure, and lineage | Private prototype |
 | 3 — Shadow operation | 2 weeks | Measure the system on two private bulletins per day and audit at least 500 claims | None |
-| 4 — Public beta | 2–4 weeks | Publish a constrained general-news service after all launch gates pass | 2–3 editions/day |
+| 4 — Public beta | 2–4 weeks | Publish a constrained general-news service after all launch gates pass | 2 editions/day |
 | 5 — Continuous operation | Gate-driven | Increase cadence safely, then add audience choice and richer formats | Every 30–60 minutes |
 
 Durations are planning estimates, not deadlines. A phase advances only when its exit gate passes.
@@ -29,7 +29,7 @@ Durations are planning estimates, not deadlines. A phase advances only when its 
 Work includes:
 
 - confirm the launch market, jurisdiction, language, and coverage horizon;
-- choose the initial bulletin cadence, duration, and permitted categories;
+- record the confirmed bulletin cadence, duration, time zone, permitted categories, and initial exclusions;
 - define the source registry, rights evidence, allowed uses, and attribution requirements;
 - define deterministic rules for high-risk topics;
 - identify the responsible publisher, responsible editor/operator, rectification address, and kill-switch authority;
@@ -156,4 +156,4 @@ These products help frame the market, but public pages often describe intended c
 
 ## Immediate next step
 
-Complete Phase 0 by deciding the initial bulletin cadence and category set, then resolve source rights and counsel-required launch questions before implementation begins.
+Complete Phase 0 by defining the source and evidence policy, then resolve accountable operation and counsel-required launch questions before implementation begins.

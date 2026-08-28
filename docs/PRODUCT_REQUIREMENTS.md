@@ -7,7 +7,7 @@ Novaris News is an autonomous, audio-first news service launching in Spanish for
 ## Goals
 
 - Help listeners in Peru and Latin America understand major regional and worldwide events without continuously monitoring many outlets.
-- Produce timely, concise audio bulletins across politics, economy, technology, science, climate, public safety, emergencies, and major global events.
+- Publish two timely, concise Spanish audio bulletins each day across the approved launch categories.
 - Make the AI origin, supporting sources, and later corrections clear to the audience.
 - Operate autonomously while failing closed when evidence or critical controls are insufficient.
 - Establish an MVP that can later support continuous programming and topic-specific channels.
@@ -35,6 +35,12 @@ Novaris News is an autonomous, audio-first news service launching in Spanish for
 
 ### Included
 
+- Two 5–10 minute Spanish audio bulletins daily at 08:00 and 18:00 `America/Lima`.
+- Current affairs in Peru, Latin America, and the world.
+- General economics without financial recommendations.
+- Technology and science.
+- Climate and environment.
+- Major public-interest events.
 - An approved, configurable source catalog.
 - Automated ingestion, normalization, language detection, and deduplication.
 - Cross-source corroboration and risk classification before script generation.
@@ -47,6 +53,11 @@ Novaris News is an autonomous, audio-first news service launching in Spanish for
 
 ### Deferred
 
+- Unconfirmed crime until deterministic verification and reputational-risk controls exist.
+- Medical advice until deterministic health-evidence and wording controls exist.
+- Election polling until deterministic electoral restrictions and metadata controls exist.
+- Emergency alerts until deterministic authority, freshness, and geographic controls exist.
+- Live conflict casualty figures until deterministic source, freshness, and contradiction controls exist.
 - Continuous 24/7 programming.
 - Video presenters, visual packages, and television distribution.
 - Topic channels selected by the user.
@@ -67,7 +78,7 @@ Novaris News is an autonomous, audio-first news service launching in Spanish for
 | FR-06 | The system shall suppress an item when its evidence, provenance, freshness, or safety status does not satisfy policy. |
 | FR-07 | The system shall rank eligible items using public-interest relevance, recency, geographic breadth, and urgency without allowing engagement alone to determine priority. |
 | FR-08 | The system shall generate scripts using only approved evidence attached to the story record. |
-| FR-09 | The system shall generate narration and assemble it into scheduled audio bulletins. |
+| FR-09 | The system shall generate narration and assemble it into two 5–10 minute Spanish audio bulletins scheduled daily at 08:00 and 18:00 `America/Lima`. |
 | FR-10 | Every bulletin shall contain an audible AI disclosure, and every playback surface shall contain a visible disclosure. |
 | FR-11 | Every published item shall expose its supporting sources and distinguish reporting time from event time when known. |
 | FR-12 | The system shall detect materially changed evidence and publish a linked update or correction without silently rewriting history. |
@@ -101,7 +112,7 @@ Novaris News is an autonomous, audio-first news service launching in Spanish for
 
 ## Success metrics
 
-Initial targets must be set after source availability and launch cadence are decided. The MVP should measure:
+Initial targets must be set after source availability is confirmed. The MVP should measure:
 
 - percentage of published material claims traceable to retained evidence;
 - unsupported-claim escape rate found by sampled post-publication audits;
@@ -131,7 +142,7 @@ These metrics assess process quality. They must not be presented as a universal 
 
 1. Final legal jurisdiction and counsel-confirmed requirements for the Peru/Latin America launch.
 2. Source catalog, licensing terms, and permitted uses of article content.
-3. Initial bulletin cadence, duration, and retention period.
+3. Bulletin freshness, replay, and retention policy.
 4. Distribution surface and the precise meaning of a future 24/7 service.
 5. Monetization and its separation from editorial prioritization.
 6. Governance ownership, incident response, and operator access model.

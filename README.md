@@ -7,7 +7,7 @@ Novaris News is an early-stage concept for an autonomous, AI-run news service th
 
 ## Current status
 
-**Phase 0 — Foundations is in progress.** The MVP is Spanish-language, audio-first web radio for Peru and Latin America, covering major worldwide events relevant to that audience. The initial cadence, category set, source-licensing model, accountable operating roles, and counsel-confirmed launch requirements remain open.
+**Phase 0 — Foundations is in progress.** The MVP is Spanish-language, audio-first web radio for Peru and Latin America, covering major worldwide events relevant to that audience. It will publish two 5–10 minute bulletins daily at 08:00 and 18:00 `America/Lima`. The source and evidence policy, accountable operating roles, and counsel-confirmed launch requirements remain open.
 
 ## MVP at a glance
 
@@ -18,11 +18,13 @@ The first release is designed to:
 - suppress claims that do not meet automated evidence rules;
 - prioritize major global events across broad subject areas;
 - generate scripts and synthetic narration;
-- publish scheduled web-audio bulletins;
+- publish scheduled web-audio bulletins twice daily;
 - disclose the use of AI visibly and audibly;
 - expose source provenance and issue corrections or updates.
 
 The MVP is **not** a full AI television channel and does not promise uninterrupted 24/7 live programming. Topic-specific channels, configurable presentation tone, and numerical confidence scores are later possibilities. A confidence score will not be shown until it has a calibrated, validated methodology.
+
+Initial coverage includes current affairs in Peru, Latin America, and the world; general economics without financial recommendations; technology and science; climate and environment; and major public-interest events. Unconfirmed crime, medical advice, election polling, emergency alerts, and live conflict casualty figures are excluded until deterministic controls exist.
 
 ## Documentation
 
@@ -44,4 +46,4 @@ The MVP is **not** a full AI television channel and does not promise uninterrupt
 
 ## Open decisions
 
-The immediate decision is the initial bulletin cadence and permitted category set. Source rights, responsible publisher/operator roles, correction and privacy procedures, counsel-confirmed Peruvian obligations, monetization, and the implementation stack also remain open. See the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist).
+The immediate decision is the source and evidence policy: which sources may be used, for what purpose, and with what corroboration requirements. Responsible publisher/operator roles, correction and privacy procedures, counsel-confirmed Peruvian obligations, monetization, and the implementation stack also remain open. See the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist).

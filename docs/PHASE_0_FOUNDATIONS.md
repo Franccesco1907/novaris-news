@@ -16,6 +16,9 @@ Phase 0 defines the constraints under which Novaris News may be designed and tes
 | Language | Spanish |
 | Initial market | Peru and Latin America |
 | Coverage horizon | Major worldwide events relevant to the initial audience |
+| Cadence | Two 5–10 minute bulletins daily at 08:00 and 18:00 `America/Lima` |
+| Launch categories | Peru, Latin America, and world current affairs; general economics without financial recommendations; technology and science; climate and environment; major public-interest events |
+| Initial exclusions | Unconfirmed crime, medical advice, election polling, emergency alerts, and live conflict casualty figures until deterministic controls exist |
 | Governance | Automated gates, post-generation audit, a responsible human operator, and a kill switch are mandatory |
 | Disclosure | AI involvement must be disclosed visibly and audibly |
 | Confidence display | No public numerical confidence score until the method is calibrated and validated |
@@ -151,14 +154,15 @@ status: "proposed"
 
 ## Open product decisions
 
-The next decision is the **initial bulletin cadence and category set**. Resolve it before designing the Phase 1 fixtures.
+The next decision is the **source and evidence policy**. Resolve it before populating the source registry or designing Phase 1 fixtures.
 
 | Decision | Required output |
 | --- | --- |
-| Cadence | Editions per day, target publication times, time zone, target duration, freshness window, and replay behavior |
-| Categories | The permitted launch categories and categories deferred because their risk rules are not ready |
-| High-risk participation | Whether politics, elections, public safety, health, crime, conflict, and finance appear in the first private evaluation or are phased in |
 | Source breadth | Minimum independent sources and primary-source requirements by category |
+| Source admission | Permitted source classes, rights evidence, allowed uses, review frequency, suspension, and revocation rules |
+| Evidence policy | Claim-level evidence requirements, source independence, freshness, contradiction handling, and exact `hold`, `reject`, or `stop` outcomes |
+| High-risk participation | Whether politics, elections, public safety, health, crime, conflict, and finance appear in the first private evaluation beyond the confirmed exclusions |
+| Bulletin lifecycle | Freshness window, replay behavior, retention period, and replacement or withdrawal rules |
 | Responsible operation | Named publisher/operator role, kill-switch authority, escalation backup, and service coverage hours |
 | Corrections | Public address, intake ownership, response workflow, notification method, and retention |
 | Data | Audience analytics scope, consent model, retention periods, data-bank inventory, and security owner |
@@ -166,9 +170,9 @@ The next decision is the **initial bulletin cadence and category set**. Resolve 
 
 ### Recommended starting point for the next decision
 
-For the private phases, start with two 5–10 minute bulletins per day in `America/Lima`. Evaluate a narrow general set—world affairs, economy, technology/science, climate/environment, and major public-interest events—while allowing elections, emergencies, allegations, health instructions, conflict, and market-moving claims only when their deterministic policies and source requirements are explicitly ready.
+Use official primary sources as the preferred evidence for authoritative claims. Admit established media only after identity, rights, attribution, retention, and independence are verified. Keep aggregators and discovery feeds discovery-only unless separately approved as evidence. Define corroboration, freshness, contradiction, and fail-closed rules by category before Phase 1.
 
-This is a recommendation, not a confirmed decision.
+This is a recommendation, not a confirmed policy.
 
 ## Counsel-required questions
 
@@ -190,8 +194,9 @@ Before public launch, obtain written advice or authoritative confirmation for:
 - [x] Product name, language, initial market, coverage horizon, and audio-first scope are recorded.
 - [x] Autonomous operation, AI disclosure, post-generation audit, accountable operator, and kill switch are product requirements.
 - [x] Public numerical confidence scores are deferred until calibrated.
-- [ ] Initial bulletin cadence, duration, time zone, freshness, and replay policy are approved.
-- [ ] Initial category set and deferred high-risk categories are approved.
+- [x] Initial bulletin cadence, duration, and time zone are approved.
+- [x] Initial category set and deferred high-risk categories are approved.
+- [ ] Bulletin freshness, replay, retention, replacement, and withdrawal policies are approved.
 - [ ] A source registry exists with rights evidence for every Phase 1 input.
 - [ ] Topic-specific evidence, freshness, contradiction, and stop rules are approved for the Phase 1 categories.
 - [ ] Responsible publisher/operator roles, rectification address, kill-switch authority, and incident escalation are assigned.
@@ -213,8 +218,10 @@ Phase 0 completes only when all unchecked items are resolved. Product experiment
 | 2026-08-28 | Operate autonomously without routine human approval | Confirmed | Autonomy is a product requirement, bounded by automated gates and human stop/correction authority |
 | 2026-08-28 | Require visible and audible AI disclosure | Confirmed | A terms-only disclaimer is insufficient for informed use |
 | 2026-08-28 | Defer public numerical confidence scores | Confirmed | An uncalibrated percentage would create false precision |
-| 2026-08-28 | Decide cadence and categories next | Open | These choices determine source selection, fixtures, risk rules, and the Phase 1 test surface |
+| 2026-08-28 | Publish two 5–10 minute bulletins daily at 08:00 and 18:00 `America/Lima` | Confirmed | A bounded schedule enables repeatable evidence and quality evaluation before continuous programming |
+| 2026-08-28 | Launch with a constrained general-news category set and explicit high-risk exclusions | Confirmed | The scope informs broadly while withholding outputs that lack deterministic safeguards |
+| 2026-08-28 | Define source and evidence policy next | Open | Source admission and claim-evidence rules are prerequisites for the registry and Phase 1 fixtures |
 
 ## Next decision
 
-Approve the initial bulletin cadence and category set. That decision unlocks source-registry population, topic-specific policies, and Phase 1 evidence fixtures.
+Approve the source and evidence policy. That decision unlocks source-registry population, topic-specific policies, and Phase 1 evidence fixtures.
