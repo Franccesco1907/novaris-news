@@ -8,32 +8,38 @@ This document defines a product policy baseline. It does **not** claim complianc
 
 ## Source policy
 
-Every input source must have an active `SourceDefinition` before ingestion. Admission should evaluate:
+Discovery and publication evidence are separate paths. A discovery input can nominate a lead; only an admitted evidence source can support a generated or published claim.
 
-- identity and editorial ownership;
-- source type: primary authority, wire, established publisher, specialist outlet, local outlet, public record, or other defined category;
-- permitted collection and reuse under applicable terms or license;
-- correction practices and stable attribution;
-- historic reliability signals and known conflicts of interest;
-- geographic, political, and subject-matter coverage;
-- whether content is original, syndicated, aggregated, or derived from a shared origin.
+| Tier | Role | Required status |
+| --- | --- | --- |
+| `E1` — official primary | Evidence base for claims within the authority's remit | `approved_evidence` |
+| `E2` — established media | Corroboration only | `approved_evidence` |
+| `D` — discovery | Lead generation only; never publication evidence | `discovery_only` or `proposed` |
 
-Source approval is not blanket factual approval. Social posts, anonymous claims, scraped aggregators, and user-generated material cannot independently establish a material claim. They may act as leads or as primary evidence of what an identified account published when authenticity is established.
+Evidence admission requires all of the following:
+
+- verified identity, ownership, canonical endpoint, and source class;
+- documented terms, license, permission, or other basis that permits the intended collection and use;
+- configured attribution, linking, retention, and collection limits;
+- a current verification date and an active approval for the relevant topic;
+- an `independence_group` covering ownership, syndication, wire service, dataset, statement, or other common upstream origin.
+
+Established media may corroborate official primary evidence only after these checks. Aggregators and social networks remain tier `D`, including apparently official social accounts; the system must resolve their leads to an admitted official record or endpoint. Anonymous claims and user-generated content are also discovery-only. Approval authorizes a defined use, not blanket factual acceptance or reuse rights.
 
 ## Evidence rules
 
 An item may proceed only when:
 
 1. each material factual claim maps to retained evidence;
-2. evidence comes from an authorized primary source or from the policy-required number of genuinely independent sources;
-3. syndication and shared upstream origins are not counted as independent corroboration;
+2. evidence includes an admitted `E1` official primary source acting within its authority;
+3. any required `E2` corroboration comes from distinct independence groups; copies derived from the same owner, wire, statement, dataset, or upstream report count once;
 4. evidence is current enough for the claim and event;
-5. material contradictions are resolved or explicitly represented under an approved disagreement format;
+5. material contradictions are resolved under an approved deterministic rule; otherwise the item is held or rejected;
 6. quotations match retained source material and attribution;
 7. generated context, causal language, and certainty do not exceed the evidence;
 8. provenance and policy decisions are available for audit and audience display.
 
-Exact source-count and freshness thresholds remain to be calibrated by topic and risk. Until then, the service must remain non-production.
+Exact corroboration-count and freshness thresholds remain to be calibrated by topic and risk. Until then, the service must remain non-production. Insufficient evidence produces `hold` while resolution remains possible and `reject` when the applicable evidence window or policy cannot be satisfied. Failure of source-rights, provenance, or policy evaluation stops the affected publication path.
 
 ## High-risk topics
 
@@ -48,7 +54,7 @@ The following require stricter, separately configured gates:
 - deaths, casualties, and identity-sensitive incidents;
 - minors, private individuals, precise locations, and sensitive personal data.
 
-High-risk handling must prefer authoritative primary information, require stronger corroboration, restrict speculative framing, and shorten freshness windows. When those conditions are unavailable, suppress the item. The system must never generate personalized medical, legal, emergency, or investment advice.
+High-risk handling must require authoritative primary information, apply any additional topic-specific corroboration, restrict speculative framing, and shorten freshness windows. When those conditions are unavailable, suppress the item. The system must never generate personalized medical, legal, emergency, or investment advice.
 
 ## AI disclosure
 

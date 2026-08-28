@@ -42,6 +42,8 @@ Novaris News is an autonomous, audio-first news service launching in Spanish for
 - Climate and environment.
 - Major public-interest events.
 - An approved, configurable source catalog.
+- Official primary sources as the publication-evidence base; rights-verified established media only as corroboration.
+- Aggregators and social networks restricted to discovery and excluded from publication evidence.
 - Automated ingestion, normalization, language detection, and deduplication.
 - Cross-source corroboration and risk classification before script generation.
 - Automated prioritization of sufficiently supported stories.
@@ -70,10 +72,10 @@ Novaris News is an autonomous, audio-first news service launching in Spanish for
 
 | ID | Requirement |
 | --- | --- |
-| FR-01 | The system shall ingest only from sources present in the active approved-source catalog. |
+| FR-01 | The system shall ingest only from sources present in the active source catalog and shall keep discovery-only inputs outside publication evidence packages. |
 | FR-02 | The system shall preserve the source URL, publisher, author when available, publication time, retrieval time, content fingerprint, and usage rights metadata for every input. |
 | FR-03 | The system shall normalize and cluster substantially overlapping reports before treating them as independent evidence. |
-| FR-04 | The system shall corroborate material claims across genuinely independent sources or an authorized primary source before publication. |
+| FR-04 | Every material claim shall map to an admitted official primary source within its authority; when policy requires corroboration, established media sources shall count only after rights verification and only across distinct independence groups. |
 | FR-05 | The system shall classify topic and risk before deciding whether a story may be generated. |
 | FR-06 | The system shall suppress an item when its evidence, provenance, freshness, or safety status does not satisfy policy. |
 | FR-07 | The system shall rank eligible items using public-interest relevance, recency, geographic breadth, and urgency without allowing engagement alone to determine priority. |
@@ -84,6 +86,19 @@ Novaris News is an autonomous, audio-first news service launching in Spanish for
 | FR-12 | The system shall detect materially changed evidence and publish a linked update or correction without silently rewriting history. |
 | FR-13 | An authorized operator shall be able to stop new publication and playback through a kill switch. |
 | FR-14 | The system shall retain an audit trail of inputs, policy decisions, generated scripts, audio versions, publications, and corrections. |
+| FR-15 | The system shall hold or reject an item when required evidence is insufficient or materially contradictory, without resolving the gap through generation. |
+
+## Source and evidence policy
+
+| Tier | Permitted role | Admission rule |
+| --- | --- | --- |
+| `E1` — official primary | Publication evidence for claims within the source's authority | Identity, official remit, endpoint, permitted use, attribution, retention, review date, and independence group are documented; status is `approved_evidence` |
+| `E2` — established media | Corroboration only | Editorial owner, endpoint, permitted use, attribution, retention, review date, and upstream independence are documented; status is `approved_evidence` |
+| `D` — discovery | Lead generation only | May enter the discovery queue, but its content cannot enter an evidence package or support a published claim |
+
+Aggregators and social networks are always tier `D`, including posts that appear to come from official accounts. The pipeline must resolve a lead to an admitted official record or endpoint before it can become evidence. Multiple reports owned by the same group or derived from the same wire, statement, dataset, or upstream report count as one independence group.
+
+Missing rights evidence, expired verification, or unknown attribution prevents evidence admission. Insufficient evidence or an unresolved material contradiction produces `hold` while resolution remains possible and `reject` when the applicable window or policy cannot be satisfied. A policy or provenance dependency failure stops the affected publication path.
 
 ## Nonfunctional requirements
 
@@ -99,7 +114,8 @@ Novaris News is an autonomous, audio-first news service launching in Spanish for
 
 ## MVP acceptance criteria
 
-- Given reports from the approved catalog, the system produces a deduplicated story cluster with retained provenance.
+- Given admitted evidence and discovery-only leads, the system produces a deduplicated story cluster while excluding discovery-only content from its evidence package.
+- Syndicated copies or reports with a shared upstream origin count as one independence group.
 - A story lacking required corroboration never reaches script, narration, or publication stages.
 - A generated script contains no material factual claim without attached evidence.
 - A published bulletin is playable on the web and has a readable transcript.
@@ -131,7 +147,7 @@ These metrics assess process quality. They must not be presented as a universal 
 | --- | --- |
 | Fabricated or distorted claims | Evidence-constrained generation, sentence-level provenance, and fail-closed validation |
 | Many outlets repeat one erroneous origin | Source-independence analysis and identification of common upstream reporting |
-| Defamation, privacy harm, or unsafe emergency guidance | Stricter topic gates, primary-source preference, minimization, and automated stop rules |
+| Defamation, privacy harm, or unsafe emergency guidance | Stricter topic gates, official-primary-source requirement, minimization, and automated stop rules |
 | Synthetic presenter is mistaken for a person | Persistent visible and audible AI disclosure |
 | Corrections do not reach prior listeners | Versioned items, prominent correction surfaces, and correction segments in later bulletins |
 | Source use violates rights or terms | Licensed/authorized source catalog and retained rights metadata |
@@ -141,7 +157,7 @@ These metrics assess process quality. They must not be presented as a universal 
 ## Open decisions
 
 1. Final legal jurisdiction and counsel-confirmed requirements for the Peru/Latin America launch.
-2. Source catalog, licensing terms, and permitted uses of article content.
+2. Source-registry population, source-by-source rights verification, and review frequency.
 3. Bulletin freshness, replay, and retention policy.
 4. Distribution surface and the precise meaning of a future 24/7 service.
 5. Monetization and its separation from editorial prioritization.

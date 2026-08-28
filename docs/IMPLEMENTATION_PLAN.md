@@ -156,4 +156,4 @@ These products help frame the market, but public pages often describe intended c
 
 ## Immediate next step
 
-Complete Phase 0 by defining the source and evidence policy, then resolve accountable operation and counsel-required launch questions before implementation begins.
+Complete Phase 0 by populating and verifying the source registry, defining topic-specific thresholds and the bulletin lifecycle, and resolving accountable operation and counsel-required launch questions before implementation begins.

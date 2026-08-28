@@ -9,7 +9,7 @@ This design is technology-agnostic. Component products, programming languages, c
 ## Logical pipeline
 
 ```text
-Approved source catalog
+Active source catalog with evidence and discovery tiers
         |
 Source ingestion -> Normalization -> Deduplication / clustering
         |                                  |
@@ -37,7 +37,7 @@ Observability, audit, policy versioning, and kill-switch control span every stag
 
 | Boundary | Responsibility | Must not do |
 | --- | --- | --- |
-| Source catalog | Store approved sources, rights metadata, trust attributes, and collection rules | Treat approval as proof that every source claim is true |
+| Source catalog | Store evidence and discovery tiers, rights metadata, independence groups, topic scope, and collection rules | Treat admission as proof that every source claim is true |
 | Source ingestion | Retrieve source material and immutable retrieval metadata | Publish or summarize directly |
 | Normalization | Extract canonical text, dates, entities, language, and fingerprints | Discard original provenance |
 | Deduplication and clustering | Group reports about the same event and identify shared upstream origins | Count syndication copies as independent corroboration |
@@ -54,7 +54,7 @@ Observability, audit, policy versioning, and kill-switch control span every stag
 
 | Object | Minimum contents |
 | --- | --- |
-| `SourceDefinition` | source ID, owner, collection endpoint, source type, active status, rights/usage metadata, policy attributes |
+| `SourceDefinition` | source ID, owner, collection endpoint, source type, evidence tier, active status, rights/usage metadata, independence group, policy attributes |
 | `SourceDocument` | immutable ID, source ID, URL, author if present, publication/retrieval times, language, original fingerprint, extracted content reference |
 | `StoryCluster` | cluster ID, event time range, member documents, shared-origin relationships, entities, topics, lifecycle state |
 | `EvidenceItem` | normalized claim or source passage, document reference, evidence type, independence group, freshness, contradiction status |
@@ -71,7 +71,7 @@ Data object names are conceptual, not implementation commitments.
 ## State and trust boundaries
 
 1. **Untrusted input:** all retrieved content is untrusted, including text that attempts to instruct the AI system.
-2. **Evidence admission:** only normalized evidence from an approved source and successful policy evaluation may enter a `StoryBrief`.
+2. **Evidence admission:** only normalized evidence from an admitted evidence-tier source and successful policy evaluation may enter a `StoryBrief`; discovery-tier content never enters the brief.
 3. **Generative boundary:** the generator receives the bounded brief, not unrestricted source feeds or operator secrets.
 4. **Publication boundary:** only an immutable script version with a successful claim-validation result can produce a publishable audio asset.
 5. **Operational boundary:** kill-switch and policy changes require authenticated, auditable operator authority.

@@ -19,6 +19,7 @@ Phase 0 defines the constraints under which Novaris News may be designed and tes
 | Cadence | Two 5–10 minute bulletins daily at 08:00 and 18:00 `America/Lima` |
 | Launch categories | Peru, Latin America, and world current affairs; general economics without financial recommendations; technology and science; climate and environment; major public-interest events |
 | Initial exclusions | Unconfirmed crime, medical advice, election polling, emergency alerts, and live conflict casualty figures until deterministic controls exist |
+| Source evidence | Admitted official primary sources form the evidence base; rights-verified established media may corroborate only; aggregators and social networks are discovery-only |
 | Governance | Automated gates, post-generation audit, a responsible human operator, and a kill switch are mandatory |
 | Disclosure | AI involvement must be disclosed visibly and audibly |
 | Confidence display | No public numerical confidence score until the method is calibrated and validated |
@@ -86,7 +87,7 @@ These controls translate the baseline into an autonomous operating model. Final 
 | --- | --- |
 | Source admission | Allow only active registry entries with verified identity, rights status, attribution, rate limits, and review date |
 | Evidence | Map every material claim to retained evidence; evaluate source independence and common upstream origins |
-| High-risk topics | Use stricter, deterministic rules, authoritative-primary-source preference, shorter freshness windows, and fail-closed outcomes |
+| High-risk topics | Use stricter, deterministic rules, an authoritative-primary-source requirement, shorter freshness windows, and fail-closed outcomes |
 | Script generation | Give the model only the bounded evidence package; reject any unsupported factual addition |
 | Identity and reputation | Prohibit impersonation, invented quotations, and unsupported allegations; minimize private-person identification |
 | Copyright | Store permitted uses and attribution; avoid reproducing protected expression or media without an explicit basis |
@@ -122,6 +123,7 @@ Every discovery or evidence source needs a record. Discovery-only status does no
 | `owner` | Legal or editorial owner |
 | `country` | Primary jurisdiction or coverage country |
 | `source_type` | Primary authority, wire, publisher, specialist, local outlet, public record, aggregator, social, or other controlled value |
+| `evidence_tier` | `E1_official_primary`, `E2_established_media`, or `D_discovery` |
 | `url_feed_api` | Canonical website and exact collection endpoint |
 | `license_terms_evidence` | URL, contract reference, permission record, or dated terms snapshot supporting use |
 | `allowed_uses` | Discovery, factual extraction, quotation, summarization, storage, publication linking, audio use, or other explicit permissions |
@@ -140,6 +142,7 @@ source_id: ""
 owner: ""
 country: ""
 source_type: ""
+evidence_tier: ""
 url_feed_api: ""
 license_terms_evidence: ""
 allowed_uses: []
@@ -152,15 +155,30 @@ verification_date: "YYYY-MM-DD"
 status: "proposed"
 ```
 
+## Confirmed source and evidence policy
+
+Discovery identifies possible stories; it does not establish facts for publication. Evidence admission is deterministic:
+
+| Tier | Permitted use | Admission requirements |
+| --- | --- | --- |
+| `E1` — official primary | Publication evidence for claims within the source's authority | Verified identity, remit, endpoint, permitted use, attribution, retention, review date, independence group, and `approved_evidence` status |
+| `E2` — established media | Corroboration only | Verified editorial owner, endpoint, permitted use, attribution, retention, review date, upstream independence, topic scope, and `approved_evidence` status |
+| `D` — discovery | Lead generation only | Content cannot enter a publication evidence package; aggregators and social networks always remain in this tier |
+
+Multiple URLs do not imply independent evidence. Reports with a shared owner, wire service, syndication chain, official statement, dataset, or other upstream origin belong to the same `independence_group` and count once.
+
+Every material claim requires an admitted `E1` source acting within its documented authority. Topic policy may additionally require one or more admitted `E2` sources from distinct independence groups. Missing or expired rights evidence, unknown attribution, or an unverified endpoint prevents admission. Insufficient evidence or an unresolved material contradiction produces `hold` while resolution remains possible and `reject` when the evidence window or applicable policy cannot be satisfied. A source-rights, provenance, or policy-service failure stops the affected publication path.
+
+This policy does not approve any named source or claim that its use is legally cleared. Registry population and source-by-source verification remain open work.
+
 ## Open product decisions
 
-The next decision is the **source and evidence policy**. Resolve it before populating the source registry or designing Phase 1 fixtures.
+The source and evidence policy is confirmed. Populate and verify the registry before using any source in Phase 1 fixtures.
 
 | Decision | Required output |
 | --- | --- |
-| Source breadth | Minimum independent sources and primary-source requirements by category |
-| Source admission | Permitted source classes, rights evidence, allowed uses, review frequency, suspension, and revocation rules |
-| Evidence policy | Claim-level evidence requirements, source independence, freshness, contradiction handling, and exact `hold`, `reject`, or `stop` outcomes |
+| Source registry | Named entries, source-by-source rights evidence, permitted uses, verification dates, review frequency, suspension, and revocation rules |
+| Topic thresholds | Required `E2` corroboration counts, freshness windows, and topic-specific `hold`, `reject`, or `stop` outcomes |
 | High-risk participation | Whether politics, elections, public safety, health, crime, conflict, and finance appear in the first private evaluation beyond the confirmed exclusions |
 | Bulletin lifecycle | Freshness window, replay behavior, retention period, and replacement or withdrawal rules |
 | Responsible operation | Named publisher/operator role, kill-switch authority, escalation backup, and service coverage hours |
@@ -170,9 +188,7 @@ The next decision is the **source and evidence policy**. Resolve it before popul
 
 ### Recommended starting point for the next decision
 
-Use official primary sources as the preferred evidence for authoritative claims. Admit established media only after identity, rights, attribution, retention, and independence are verified. Keep aggregators and discovery feeds discovery-only unless separately approved as evidence. Define corroboration, freshness, contradiction, and fail-closed rules by category before Phase 1.
-
-This is a recommendation, not a confirmed policy.
+Define the bulletin lifecycle: freshness window, replay behavior, retention period, and replacement or withdrawal rules. This decision determines whether a valid edition remains playable when the next scheduled edition is held.
 
 ## Counsel-required questions
 
@@ -196,6 +212,7 @@ Before public launch, obtain written advice or authoritative confirmation for:
 - [x] Public numerical confidence scores are deferred until calibrated.
 - [x] Initial bulletin cadence, duration, and time zone are approved.
 - [x] Initial category set and deferred high-risk categories are approved.
+- [x] Source tiers, evidence admission, independence grouping, contradiction handling, and fail-closed outcomes are approved.
 - [ ] Bulletin freshness, replay, retention, replacement, and withdrawal policies are approved.
 - [ ] A source registry exists with rights evidence for every Phase 1 input.
 - [ ] Topic-specific evidence, freshness, contradiction, and stop rules are approved for the Phase 1 categories.
@@ -220,8 +237,8 @@ Phase 0 completes only when all unchecked items are resolved. Product experiment
 | 2026-08-28 | Defer public numerical confidence scores | Confirmed | An uncalibrated percentage would create false precision |
 | 2026-08-28 | Publish two 5–10 minute bulletins daily at 08:00 and 18:00 `America/Lima` | Confirmed | A bounded schedule enables repeatable evidence and quality evaluation before continuous programming |
 | 2026-08-28 | Launch with a constrained general-news category set and explicit high-risk exclusions | Confirmed | The scope informs broadly while withholding outputs that lack deterministic safeguards |
-| 2026-08-28 | Define source and evidence policy next | Open | Source admission and claim-evidence rules are prerequisites for the registry and Phase 1 fixtures |
+| 2026-08-28 | Use admitted official primary sources as the evidence base; allow rights-verified established media only as corroboration; keep aggregators and social networks discovery-only | Confirmed | Separates lead discovery from publication evidence and prevents repeated or unlicensed material from appearing as independent support |
 
 ## Next decision
 
-Approve the source and evidence policy. That decision unlocks source-registry population, topic-specific policies, and Phase 1 evidence fixtures.
+Approve the bulletin lifecycle policy: freshness, replay, retention, replacement, and withdrawal. In parallel, populate and verify the source registry before creating Phase 1 evidence fixtures.
