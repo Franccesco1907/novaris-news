@@ -1,0 +1,311 @@
+schema_version: 1
+registry_status: non_production
+prepared_on: "2026-08-28"
+connectors_active: false
+date_semantics: >-
+  checked_on records when a cited page was observed. It is not technical,
+  editorial, or legal approval and it does not authorize a connector.
+rights_note_semantics: >-
+  Each terms_evidence summary is a provisional reading for review, not legal
+  clearance. Admission requires the dated snapshot, content hash, and approvals
+  named by the source status.
+status_definitions:
+  pending_technical_and_legal_review: >-
+    A candidate rights page and intended use have been recorded, but the connector
+    is not admitted until endpoint tests, a dated terms snapshot with content hash,
+    and final technical, legal, and editorial review succeed.
+  pending_rights: >-
+    Identity or endpoint is known, but the intended automated collection,
+    storage, transformation, or publication rights are not established.
+  discovery_only: >-
+    If separately admitted for discovery use, the source may nominate a lead but
+    its content cannot enter a publication evidence package. This status alone
+    does not enable a connector.
+
+sources:
+  - source_id: bcrp-data
+    owner: Banco Central de Reserva del Peru
+    country: PE
+    source_type: official_statistics
+    evidence_tier: E1_official_primary
+    connector_enabled: false
+    status: pending_technical_and_legal_review
+    canonical_url: https://estadisticas.bcrp.gob.pe/estadisticas/series/
+    collection_endpoint: "https://estadisticas.bcrp.gob.pe/estadisticas/series/api/{series}/json/{start}/{end}/esp"
+    documentation_url: https://estadisticas.bcrp.gob.pe/estadisticas/series/ayuda/api
+    remit: Values, periods, revisions, and methodology for BCRPData series.
+    terms_evidence:
+      url: https://estadisticas.bcrp.gob.pe/estadisticas/series/ayuda/condiciones-de-uso
+      checked_on: "2026-08-28"
+      snapshot_required: true
+      summary: Total or partial reproduction is permitted without authorization when the source is cited.
+    allowed_use_notes: Extract factual series values and metadata only; preserve the upstream source declared by each series.
+    attribution: Banco Central de Reserva del Peru — BCRPData; include the series identifier and upstream source when present.
+    retention_notes: No retention limit was identified in the cited conditions; final retention must follow the approved product schedule.
+    rate_limit_notes: No contractual limit recorded; determine a conservative technical limit during connector testing.
+    independence_group: "bcrp:{series_source}"
+    blocking_reason: Endpoint behavior, revision handling, terms snapshot, and final legal/editorial admission are unverified.
+
+  - source_id: senamhi
+    owner: Servicio Nacional de Meteorologia e Hidrologia del Peru
+    country: PE
+    source_type: official_weather_authority
+    evidence_tier: E1_official_primary
+    connector_enabled: false
+    status: pending_technical_and_legal_review
+    canonical_url: https://www.senamhi.gob.pe/
+    collection_endpoint: https://www.senamhi.gob.pe/?p=avisos
+    documentation_url: https://www.senamhi.gob.pe/site/descarga-datos/?p=articulos
+    remit: SENAMHI-issued alert level, validity window, affected area, and SENAMHI-authored observations.
+    terms_evidence:
+      url: https://www.senamhi.gob.pe/?p=terminos-condiciones
+      checked_on: "2026-08-28"
+      snapshot_required: true
+      summary: Use with or without profit is permitted with acknowledgement and without misleading presentation; third-party content is excluded.
+    allowed_use_notes: Use only SENAMHI-authored facts; do not reuse third-party material or convert an advisory into emergency instructions.
+    attribution: "Informacion recopilada y trabajada por el Servicio Nacional de Meteorologia e Hidrologia del Peru. El uso que se le da a esta informacion es de mi (nuestra) entera responsabilidad."
+    retention_notes: No source-specific period recorded; retain only approved evidence metadata and product snapshots under the final schedule.
+    rate_limit_notes: Determine during endpoint testing.
+    independence_group: "senamhi:{product}:{upstream}"
+    blocking_reason: Endpoint parsing, authored-versus-third-party boundaries, terms snapshot, and final admission are unverified.
+
+  - source_id: world-bank-wdi
+    owner: World Bank
+    country: GLOBAL
+    source_type: official_international_statistics
+    evidence_tier: E1_official_primary
+    connector_enabled: false
+    status: pending_technical_and_legal_review
+    canonical_url: https://datacatalog.worldbank.org/infrastructure-data/search/dataset/0037712/world-development-indicators
+    collection_endpoint: "https://api.worldbank.org/v2/country/{country}/indicator/{indicator}?format=json&source=2"
+    documentation_url: https://datahelpdesk.worldbank.org/knowledgebase/articles/889392
+    remit: WDI values, vintage, unit, methodology, and declared source organization.
+    terms_evidence:
+      url: https://datacatalog.worldbank.org/public-licenses
+      checked_on: "2026-08-28"
+      snapshot_required: true
+      summary: The WDI catalog identifies a Creative Commons Attribution 4.0 license.
+    allowed_use_notes: Factual extraction and transformation under CC BY 4.0; identify translations or changes and preserve indicator provenance.
+    attribution: World Bank, World Development Indicators; include indicator, source organization, vintage, and changes or translation.
+    retention_notes: Retention permitted by the cited license, subject to attribution and the product minimization schedule.
+    rate_limit_notes: Determine and document API limits during connector testing.
+    independence_group: "world-bank-wdi:{sourceOrganization}"
+    blocking_reason: Indicator provenance, revision behavior, terms snapshot, endpoint tests, and final admission are pending.
+
+  - source_id: usgs-earthquake-significant-day
+    owner: U.S. Geological Survey
+    country: US
+    source_type: official_geoscience_authority
+    evidence_tier: E1_official_primary
+    connector_enabled: false
+    status: pending_technical_and_legal_review
+    canonical_url: https://earthquake.usgs.gov/earthquakes/feed/
+    collection_endpoint: https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_day.geojson
+    documentation_url: https://earthquake.usgs.gov/fdsnws/event/1/swagger.json
+    remit: Earthquake event identifiers, parameters, review status, updates, and deletions; excludes casualty figures.
+    terms_evidence:
+      url: https://www.usgs.gov/faqs/are-usgs-reportspublications-copyrighted
+      checked_on: "2026-08-28"
+      snapshot_required: true
+      summary: USGS data and information are generally public domain; USGS requests credit and third-party material remains excluded.
+    allowed_use_notes: Preserve event_id, updated, status, network/contributor, and retrieval time; process revisions and tombstones.
+    attribution: U.S. Geological Survey; link the event record and identify network or contributor.
+    retention_notes: No source limit identified; retain revisions and tombstones only under the approved evidence schedule.
+    rate_limit_notes: Follow documented feed and API usage guidance after technical review.
+    independence_group: "anss-comcat:{network_or_contributor}"
+    blocking_reason: Revision/deletion tests, terms snapshot, rate policy, and final admission are pending.
+
+  - source_id: nasa-news-rss
+    owner: National Aeronautics and Space Administration
+    country: US
+    source_type: official_science_agency
+    evidence_tier: E1_official_primary
+    connector_enabled: false
+    status: pending_technical_and_legal_review
+    canonical_url: https://www.nasa.gov/rss-feeds/
+    collection_endpoint: https://www.nasa.gov/news-release/feed/
+    documentation_url: https://www.nasa.gov/rss-feeds/
+    remit: NASA-authored mission status, events, decisions, and NASA findings.
+    terms_evidence:
+      url: https://www.nasa.gov/nasa-brand-center/images-and-media/
+      checked_on: "2026-08-28"
+      snapshot_required: true
+      summary: Factual informational/editorial use is generally allowed with acknowledgement; marked third-party material, logos, and endorsement implications are excluded.
+    allowed_use_notes: Use NASA-authored factual text only; resolve external research to the original primary paper or authority.
+    attribution: NASA; link the release and do not imply endorsement.
+    retention_notes: Retain only NASA-authored evidence necessary for audit under the final schedule; exclude third-party media.
+    rate_limit_notes: Determine a conservative RSS polling interval during connector testing.
+    independence_group: "nasa:{mission_or_office}"
+    blocking_reason: Feed behavior, authorship classification, media exclusions, terms snapshot, and final admission are pending.
+
+  - source_id: noaa-nws-alerts
+    owner: National Weather Service, National Oceanic and Atmospheric Administration
+    country: US
+    source_type: official_weather_authority
+    evidence_tier: E1_official_primary
+    connector_enabled: false
+    status: pending_technical_and_legal_review
+    canonical_url: https://www.weather.gov/documentation/services-web-api
+    collection_endpoint: https://api.weather.gov/alerts/active
+    documentation_url: https://www.weather.gov/documentation/services-web-api
+    remit: NWS-issued alert type, geography, severity, and validity; not authoritative for Peru.
+    terms_evidence:
+      url: https://www.weather.gov/documentation/services-web-api
+      checked_on: "2026-08-28"
+      snapshot_required: true
+      summary: Open data is free for any purpose; a User-Agent and reasonable rate limits are required.
+    allowed_use_notes: Retain issuing office and validity; excluded emergency-alert content cannot be published in the MVP.
+    attribution: NOAA/National Weather Service; include issuing office and source link.
+    retention_notes: No source-specific period recorded; store only minimum revision/audit metadata under the final schedule.
+    rate_limit_notes: Send an identifying User-Agent and implement documented reasonable request limits.
+    independence_group: "noaa-nws:{issuing_office}"
+    blocking_reason: Emergency alerts are excluded from MVP publication; connector remains for private fixture evaluation after review.
+
+  - source_id: gdacs
+    owner: Global Disaster Alert and Coordination System
+    country: GLOBAL
+    source_type: interagency_disaster_system
+    evidence_tier: E1_official_primary
+    connector_enabled: false
+    status: pending_technical_and_legal_review
+    canonical_url: https://www.gdacs.org/
+    collection_endpoint: https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH
+    documentation_url: https://www.gdacs.org/Documents/2025/GDACS_API_quickstart_v2.pdf
+    remit: GDACS event identifier, alert level, and GDACS assessment; underlying measurements retain their upstream origin.
+    terms_evidence:
+      url: https://www.gdacs.org/documents/2025/GDACS_Terms_of_use_Mar_25.pdf
+      checked_on: "2026-08-28"
+      snapshot_required: true
+      summary: Data is free through GDACS APIs, saving a collection is permitted, and acknowledgement is required.
+    allowed_use_notes: Do not count GDACS as independent corroboration of an underlying USGS or other upstream measurement.
+    attribution: Global Disaster Awareness and Coordination System, GDACS; link event and upstream provider when available.
+    retention_notes: Saving API collections is permitted; final product retention remains subject to minimization and legal review.
+    rate_limit_notes: Apply the API guide limits after connector testing.
+    independence_group: "gdacs:{hazard}:{upstream_provider}"
+    blocking_reason: Upstream-origin mapping, endpoint tests, terms snapshot, excluded emergency use, and final admission are pending.
+
+  - source_id: peru-gob-news
+    owner: Government of Peru
+    country: PE
+    source_type: official_portal
+    evidence_tier: D_discovery
+    connector_enabled: false
+    status: pending_rights
+    canonical_url: https://www.gob.pe/
+    collection_endpoint: "https://www.gob.pe/busquedas?contenido%5B%5D=noticias&sort_by=recent"
+    documentation_url: null
+    remit: Discovery of official announcements; each claim must resolve to an admitted issuing authority source.
+    terms_evidence: {url: null, checked_on: "2026-08-28", snapshot_required: true, summary: No clear automated reuse and storage permission was confirmed.}
+    allowed_use_notes: Manual discovery only until rights and endpoint behavior are approved.
+    attribution: Not applicable while unapproved.
+    retention_notes: Store URL and minimal discovery metadata only; no article body.
+    rate_limit_notes: Unknown.
+    independence_group: "peru-gob:{issuing_entity}:{statement}"
+    blocking_reason: Automated collection, storage, transformation, and publication rights are unclear.
+
+  - source_id: inei-data
+    owner: Instituto Nacional de Estadistica e Informatica
+    country: PE
+    source_type: official_statistics
+    evidence_tier: D_discovery
+    connector_enabled: false
+    status: pending_rights
+    canonical_url: https://www.inei.gob.pe/bases-de-datos/
+    collection_endpoint: https://proyectos.inei.gob.pe/microdatos/index.htm
+    documentation_url: null
+    remit: Discovery of Peru official statistical datasets.
+    terms_evidence: {url: null, checked_on: "2026-08-28", snapshot_required: true, summary: A clear license for the intended automated use was not confirmed.}
+    allowed_use_notes: Discovery only; do not collect microdata or publish claims from it.
+    attribution: Not applicable while unapproved.
+    retention_notes: URL and minimal discovery metadata only.
+    rate_limit_notes: Unknown.
+    independence_group: "inei:{dataset}:{upstream}"
+    blocking_reason: License, personal-data boundaries, endpoint, retention, and attribution rules are unresolved.
+
+  - source_id: igp-censis
+    owner: Instituto Geofisico del Peru
+    country: PE
+    source_type: official_geoscience_authority
+    evidence_tier: D_discovery
+    connector_enabled: false
+    status: pending_rights
+    canonical_url: https://censis.igp.gob.pe/
+    collection_endpoint: https://ide.igp.gob.pe/arcgis/rest/services/monitoreocensis/UltimoSismo/MapServer/0
+    documentation_url: null
+    remit: Discovery of Peru seismic event records.
+    terms_evidence: {url: null, checked_on: "2026-08-28", snapshot_required: true, summary: Reuse permission for the API output was not confirmed.}
+    allowed_use_notes: Discovery only until reuse rights and revision behavior are approved.
+    attribution: Not applicable while unapproved.
+    retention_notes: URL and minimal discovery metadata only.
+    rate_limit_notes: Unknown.
+    independence_group: "igp-censis:{event_id}:{upstream}"
+    blocking_reason: Reuse license, revision/tombstone behavior, and technical limits are unclear.
+
+  - source_id: agencia-andina-rss
+    owner: Editora Peru / Agencia Peruana de Noticias Andina
+    country: PE
+    source_type: established_media
+    evidence_tier: D_discovery
+    connector_enabled: false
+    status: pending_rights
+    canonical_url: https://andina.pe/
+    collection_endpoint: https://portal.andina.pe/edpespeciales/especiales/2006/agosto/rss/canales.html
+    documentation_url: null
+    remit: Discovery of potential Peru news leads.
+    terms_evidence:
+      url: https://andina.pe/agencia/legal/andinatyc.html
+      checked_on: "2026-08-28"
+      snapshot_required: true
+      summary: Terms reserve rights and prohibit reproduction without consent.
+    allowed_use_notes: No automated content reuse; discovery URL only unless written permission is obtained.
+    attribution: Not applicable while unapproved.
+    retention_notes: URL and minimal discovery metadata only; no article body.
+    rate_limit_notes: Unknown.
+    independence_group: "editora-peru:{upstream}"
+    blocking_reason: Written permission is required before automated collection, storage, or transformation.
+
+  - source_id: un-news
+    owner: United Nations
+    country: GLOBAL
+    source_type: intergovernmental_news
+    evidence_tier: D_discovery
+    connector_enabled: false
+    status: pending_rights
+    canonical_url: https://news.un.org/
+    collection_endpoint: null
+    documentation_url: null
+    remit: Discovery of UN-related events and statements.
+    terms_evidence:
+      url: https://www.un.org/en/about-us/copyright
+      checked_on: "2026-08-28"
+      snapshot_required: true
+      summary: Credit and notification requirements are stated; adaptation and archival use remain unclear for this product.
+    allowed_use_notes: Discovery only; resolve leads to an admitted UN primary record after rights review.
+    attribution: Not applicable while unapproved.
+    retention_notes: URL and minimal discovery metadata only.
+    rate_limit_notes: Unknown.
+    independence_group: "un:{office}:{statement}"
+    blocking_reason: Adaptation, automated collection, and archive permissions are unresolved.
+
+  - source_id: reliefweb-api
+    owner: United Nations Office for the Coordination of Humanitarian Affairs
+    country: GLOBAL
+    source_type: aggregator
+    evidence_tier: D_discovery
+    connector_enabled: false
+    status: discovery_only
+    canonical_url: https://reliefweb.int/
+    collection_endpoint: null
+    documentation_url: https://apidoc.reliefweb.int/index.html
+    remit: Discovery of humanitarian reports; partner-report content is not publication evidence.
+    terms_evidence:
+      url: https://apidoc.reliefweb.int/index.html
+      checked_on: "2026-08-28"
+      snapshot_required: true
+      summary: API records may include copyrighted partner reports with source-specific rights.
+    allowed_use_notes: Discovery identifiers and links only; resolve each lead to an admitted primary source.
+    attribution: ReliefWeb for discovery plus the original source when resolved.
+    retention_notes: Store only minimal discovery metadata and links.
+    rate_limit_notes: Follow API documentation after technical review.
+    independence_group: "reliefweb:{original_source}:{report}"
+    blocking_reason: The exact API route/version still requires technical review, and aggregated partner content cannot establish publication rights or independent corroboration.
