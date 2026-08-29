@@ -1,18 +1,21 @@
 {
-  "name": "@novaris/phase1-harness",
+  "name": "@novaris/audit-postgres",
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "start": "node dist/index.js",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@novaris/audit-lineage": "workspace:*",
-    "@novaris/audit-postgres": "workspace:*",
-    "@novaris/editorial-policy": "workspace:*",
+    "@novaris/shared-contracts": "workspace:*",
+    "pg": "8.23.0"
+  },
+  "devDependencies": {
     "@novaris/evidence-pipeline": "workspace:*",
-    "@novaris/shared-contracts": "workspace:*"
+    "@types/pg": "8.23.1"
   }
 }

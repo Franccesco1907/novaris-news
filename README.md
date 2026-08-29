@@ -7,7 +7,7 @@ Novaris News is an early-stage concept for an autonomous, AI-run news service th
 
 ## Current status
 
-**Phase 1 — Evidence-pipeline spike has started while Phase 0 launch blockers remain open.** The private slices validate synthetic evidence-admission inputs, produce deterministic `eligible`, `hold`, `reject`, or `stop` decisions, and assemble immutable content-addressed evidence packages for eligible cases. They have no real connectors, database, model call, audio, scheduler, public API, or publication path, and they do not yet cover all 24 fixture cases.
+**Phase 1 — Evidence-pipeline spike has started while Phase 0 launch blockers remain open.** The private slices validate synthetic evidence-admission inputs, assemble immutable content-addressed evidence packages, construct deterministic audit lineage, and can persist that lineage in an isolated PostgreSQL 17 test database. They have no real connectors, model call, audio, scheduler, public API, deployment, or publication path, and they do not yet cover all 24 fixture cases.
 
 ## MVP at a glance
 
@@ -59,6 +59,21 @@ corepack pnpm harness
 
 The harness is deterministic and private. It calls no external API or language model and exits nonzero when an implemented synthetic case disagrees with its expected outcome.
 
+The default harness remains database-free. PostgreSQL audit checks are explicit and use a dedicated disposable database with distinct migrator and runtime roles:
+
+```bash
+cp .env.audit.example .env.audit
+# Replace every placeholder with local test-only values, then:
+set -a; source .env.audit; set +a
+corepack pnpm audit:db:up
+trap 'corepack pnpm audit:db:down' EXIT
+corepack pnpm audit:migrate
+corepack pnpm test:integration:audit
+corepack pnpm harness:audit
+```
+
+Never point these commands at an existing application or Supabase database. The Compose service and its volume are test-only and `audit:db:down` removes both.
+
 ## Principles
 
 1. **Autonomous does not mean ungoverned.** Publication has no routine human approval gate, but automated editorial and safety gates are mandatory.
@@ -69,4 +84,4 @@ The harness is deterministic and private. It calls no external API or language m
 
 ## Open decisions
 
-The immediate engineering work is to expand the evidence pipeline toward complete fixture coverage, durable audit lineage, bounded script generation, and semantic claim validation without admitting real sources prematurely. In parallel, connector admission, responsible roles, procedure tests, and the counsel/authority questions in the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist) remain mandatory. Nothing in the current slice permits public launch or real-source publication.
+The immediate engineering work is to expand fixture coverage, add bounded script generation and semantic claim validation, and harden audit operations without admitting real sources prematurely. In parallel, connector admission, responsible roles, procedure tests, and the counsel/authority questions in the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist) remain mandatory. Nothing in the current slice permits public launch or real-source publication.

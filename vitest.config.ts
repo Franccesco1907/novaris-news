@@ -7,6 +7,6 @@ export default defineConfig({
       exclude: ["**/*.test.ts"],
       reporter: ["text"],
     },
-    exclude: ["**/dist/**", "**/node_modules/**"],
+    exclude: ["**/dist/**", "**/node_modules/**", "**/*.integration.test.ts"],
   },
 });

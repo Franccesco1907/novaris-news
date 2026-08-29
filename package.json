@@ -7,11 +7,16 @@
     "node": ">=24 <25"
   },
   "scripts": {
+    "audit:db:down": "docker compose -f compose.audit-test.yaml down -v --remove-orphans",
+    "audit:db:up": "docker compose -f compose.audit-test.yaml up -d --wait",
+    "audit:migrate": "pnpm build && node packages/audit-postgres/dist/migrate.js",
     "build": "pnpm --recursive run build",
     "format:check": "prettier --check \"apps/**/*.{ts,json}\" \"packages/**/*.{ts,json}\" \"*.{json,ts}\" pnpm-workspace.yaml",
     "harness": "pnpm build && pnpm --filter @novaris/phase1-harness start",
+    "harness:audit": "pnpm build && node apps/phase1-harness/dist/audit-index.js",
     "test": "pnpm build && vitest run",
     "test:coverage": "pnpm build && vitest run --coverage",
+    "test:integration:audit": "pnpm build && vitest run --config vitest.integration.config.ts",
     "typecheck": "pnpm build && pnpm --recursive run typecheck"
   },
   "devDependencies": {

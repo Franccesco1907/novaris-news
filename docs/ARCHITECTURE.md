@@ -4,7 +4,7 @@
 
 The system is a policy-gated modular monolith with Hexagonal Architecture. Evidence and provenance travel with a story from ingestion through playback; generation cannot bypass corroboration, and uncertainty in a critical control stops publication.
 
-Phase 1 uses Node.js 24, TypeScript, pnpm workspaces, Zod contracts, and Vitest. PostgreSQL is the future authoritative store behind ports; no database or external service is connected in the current slices. Model, text-to-speech, cloud, and deployment vendors remain open decisions.
+Phase 1 uses Node.js 24, TypeScript, pnpm workspaces, Zod contracts, Vitest, and an explicit PostgreSQL 17 integration boundary. PostgreSQL is exercised only through a disposable test service and an adapter behind a domain-owned port. Model, text-to-speech, cloud, and deployment vendors remain open decisions.
 
 ## Approved physical architecture
 
@@ -17,36 +17,44 @@ novaris-news/
 ├── packages/
 │   ├── shared-contracts/     # Validated boundary inputs and outputs
 │   ├── editorial-policy/     # Pure fail-closed evidence admission rules
-│   └── evidence-pipeline/    # Deterministic EvidencePackage assembly
+│   ├── evidence-pipeline/    # Deterministic EvidencePackage assembly
+│   ├── audit-lineage/        # Content-addressed audit domain and store port
+│   └── audit-postgres/       # PostgreSQL adapter, migration, and integration tests
+├── compose.audit-test.yaml   # Disposable PostgreSQL 17 integration service
 ├── config/                   # Non-active source candidates
 └── docs/                     # Product, policy, and architecture contracts
 ```
 
-Only packages with working behavior exist. The planned `source-catalog`, `script-generation`, `claim-validation`, and `audit` boundaries will be added as executable vertical slices—not as empty placeholders.
+Only packages with working behavior exist. The planned `source-catalog`, `script-generation`, and `claim-validation` boundaries will be added as executable vertical slices—not as empty placeholders.
 
 ```text
 phase1-harness -> editorial-policy -> shared-contracts
 phase1-harness -> evidence-pipeline -> shared-contracts
+phase1-harness -> audit-lineage -> evidence-pipeline, shared-contracts
+phase1-harness -> audit-postgres -> audit-lineage
+audit-postgres -> audit-lineage -> evidence-pipeline, shared-contracts
 ```
 
 - Domain policy is pure and has no database, network, model, or framework dependency.
 - Inputs and decisions are validated at boundaries with versioned Zod schemas.
 - The private harness supplies synthetic data through the same public policy function a future adapter will call.
 - Evidence-package assembly owns an admission-evaluator port. The harness adapts `editorial-policy`; `evidence-pipeline` does not import it.
-- Future PostgreSQL persistence will implement domain-owned ports. Domain packages must not import a database client.
+- `audit-lineage` owns the application port, deterministic event construction, verification, and package reconstruction; it does not import PostgreSQL.
+- `audit-postgres` implements that port with transactions, per-stream advisory locks, an append-only schema, and separate migration/runtime roles. Domain packages do not import a database client.
 - Future AI and text-to-speech providers will be replaceable adapters. A generator may receive only an admitted `EvidencePackage`.
 
 | Area | First Phase 1 slice | Later Phase 1 or Phase 2 |
 | --- | --- | --- |
 | Inputs | Authored synthetic cases | Rights-cleared connectors after admission |
 | Admission | Core fail-closed evidence rules | Full topic-policy and revision/tombstone coverage |
-| Evidence package | Canonically serialized, content-addressed, recursively frozen synthetic package | Persistence and broader fixture coverage |
+| Evidence package | Canonically serialized, content-addressed, recursively frozen synthetic package | Broader fixture coverage and semantic validation |
+| Audit lineage | Canonical event hashing, chain verification, package reconstruction, and exact artifact bytes | External head anchoring, backup/restore, monitoring, and production hardening |
 | Generation | Not implemented | Bounded generation and semantic claim validation |
-| Persistence | In-memory values only | PostgreSQL through ports, immutable audit records |
+| Persistence | Explicit disposable PostgreSQL 17 adapter test path; default harness remains DB-free | Hosted database, recovery objectives, operational hardening |
 | Runtime | Private deterministic CLI | Internal orchestration, then private bulletin pipeline |
 | Publication/audio | Not implemented | Phase 2 only |
 
-The implemented slices prove policy admission and structural evidence-package assembly. They do not satisfy all 24 fixture cases or the Phase 1 exit gate.
+The implemented slices prove policy admission, structural evidence-package assembly, deterministic audit reconstruction, and adapter-level PostgreSQL persistence using synthetic data. They do not satisfy all 24 fixture cases or the Phase 1 exit gate.
 
 ## Logical pipeline
 
@@ -85,6 +93,8 @@ Observability, audit, policy versioning, and kill-switch control span every stag
 | Deduplication and clustering | Group reports about the same event and identify shared upstream origins | Count syndication copies as independent corroboration |
 | Corroboration and risk gate | Evaluate evidence sufficiency, independence, freshness, contradictions, and topic risk | Generate prose or weaken a policy because a story is popular |
 | Evidence-package assembly | Re-evaluate admission, bind immutable snapshots and origin roots, validate structural claim links, and create a canonical content identity | Treat a structural link or fingerprint as proof that a claim is semantically true |
+| Audit lineage | Preserve exact canonical package bytes, construct content-addressed per-story events, verify a chain against a trusted expected head, and reconstruct validated packages | Treat hashes as proof of factual truth or silently accept a missing/truncated stream |
+| PostgreSQL audit adapter | Atomically append artifacts and events under a per-stream lock, enforce idempotency, and expose the domain store port | Leak `pg` into domain packages or grant the runtime role ownership/DDL/mutation privileges |
 | Prioritization | Rank eligible stories for public relevance, urgency, recency, and diversity | Admit rejected stories or optimize solely for engagement |
 | Script generation | Produce a concise bulletin script constrained to approved evidence | Add unsupported context, quotes, or certainty |
 | Claim validation | Map material claims to evidence and verify required disclosure | Repair missing evidence by inventing text |
@@ -107,9 +117,14 @@ Observability, audit, policy versioning, and kill-switch control span every stag
 | `AudioAsset` | script version, voice configuration, audio fingerprint, duration, generation status |
 | `Bulletin` | ordered item versions, schedule, original publication time, 16-hour expiry, transcript, audio asset, publication/withdrawal state, disclosure, region/language |
 | `CorrectionRecord` | affected item/version, trigger evidence, corrected claims, replacement version, timestamps, audience notification state |
-| `AuditEvent` | actor/service, action, object and version, policy result, timestamp, correlation ID |
+| `EvidencePackageArtifact` | exact canonical package bytes, semantic package snapshot, package ID, SHA-256 fingerprint, media type, and byte length |
+| `AuditEvent` | schema version, decimal sequence, story stream, previous hash, request/idempotency fingerprints, event type and time, and exact package-lineage fingerprints |
 
-Data object names remain conceptual unless implemented in a versioned contract. The current code implements evidence-admission boundaries and a versioned `EvidencePackage` contract with immutable document, rights, provenance, origin-graph, atomic-claim, and evidence-link snapshots.
+Data object names remain conceptual unless implemented in a versioned contract. The current code implements evidence-admission boundaries, a versioned `EvidencePackage`, `EvidencePackageArtifact`, and immutable audit-event contracts.
+
+Audit verification requires a trusted expected head supplied from outside the stream being checked. This detects tail truncation, but no hash chain can prove that a whole stream existed after both the stream and its only in-database head reference are deleted. Production design therefore still needs an independently protected head anchor plus tested backup and restore procedures.
+
+The migration stores exact canonical bytes beside semantic JSON and uses constraints, triggers, grants, and separate migrator/runtime roles to reject ordinary mutation. This is defense in depth, not external notarization: a database owner or superuser can still alter or disable database controls.
 
 ## State and trust boundaries
 
@@ -157,7 +172,7 @@ The kill switch must support at least a global publication stop. Segment-level c
 
 ## Architecture decisions still open
 
-- PostgreSQL schema, hosting, migration strategy, and tamper-evidence design.
+- PostgreSQL hosting, independently protected head anchoring, backup/restore, monitoring, and production hardening. The current schema and migration are integration-test artifacts, not a production approval.
 - Internal orchestration and transaction boundaries after the pure policy slice.
 - Model and text-to-speech providers, including fallback policy.
 - Deployment topology and regional data boundaries.

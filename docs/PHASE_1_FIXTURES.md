@@ -71,7 +71,23 @@ The private harness and unit suite now exercise deterministic evidence-package a
 | EP09–EP10 | Permutation-invariant identity, canonical bytes, deep freezing, and caller-input detachment |
 | EP11–EP12 | Snapshot consistency and missing-node, cyclic, or ambiguous origin-graph rejection |
 
-Package hashes prove byte identity, not factual truth, legal authorization, or semantic claim support. Semantic claim validation and durable audit persistence remain future Phase 1 work.
+Package hashes prove byte identity, not factual truth, legal authorization, or semantic claim support. Semantic claim validation remains future Phase 1 work.
+
+## Implemented audit-lineage cases
+
+The audit unit and PostgreSQL integration suites use synthetic packages only. They exercise infrastructure invariants, not editorial truth.
+
+| ID | Audit behavior |
+| --- | --- |
+| AL01–AL03 | Exact canonical artifact bytes, stable content/event hashes, append preparation, and idempotent replay semantics |
+| AL04–AL06 | Modified-event, gap, duplicate/fork, previous-hash, and sequence validation |
+| AL07–AL09 | Missing or modified artifact, package-lineage mismatch, trusted-head tail truncation, and immutable package reconstruction |
+| AL10 | Malformed, null, rejected, or failed audit-store reads return typed boundary failures instead of throwing |
+| PG01–PG03 | Migration privileges, reconnect durability, serialized concurrent append, and expected-head conflict |
+| PG04–PG06 | Idempotent replay, conflicting key rejection, and blocked update/delete/truncate/mutation upsert attempts |
+| PG07–PG09 | Artifact collision handling, atomic rollback without orphan artifacts, and reconstruction after reconnect |
+
+Verification requires a trusted expected stream head. Complete deletion cannot be detected when the only trusted head is deleted with the same database; independent anchoring and production recovery controls are not implemented.
 
 ## Exit evidence
 
@@ -83,4 +99,4 @@ Phase 1 cannot claim success until the harness proves:
 - replay and withdrawal decisions are enforced per playback request; and
 - audit reconstruction includes input fingerprints, rights evidence, policies, decisions, script/audio versions, and operator actions.
 
-A private synthetic harness is implemented and tested for the admission and evidence-package cases described above. Real connectors remain non-active, the broader F01–F24 exit evidence is incomplete, and the Phase 1 exit gate has not passed.
+A private synthetic harness is implemented and tested for the admission and evidence-package cases described above. An explicit database-backed audit harness persists, reconnects, verifies, and reconstructs one synthetic package. Real connectors remain non-active, the broader F01–F24 exit evidence is incomplete, and the Phase 1 exit gate has not passed.
