@@ -80,7 +80,9 @@ const eligibleInput: EvidencePackageAssemblyInput = {
     nodes: [{ originId: "origin-authority", fingerprint: HASH_A }],
     edges: [],
   },
-  claims: [{ claimId: "claim-1", text: "The authority published an update." }],
+  claims: [
+    { claimId: "claim-1", text: "La autoridad publicó una actualización." },
+  ],
   claimEvidenceLinks: [
     {
       claimId: "claim-1",

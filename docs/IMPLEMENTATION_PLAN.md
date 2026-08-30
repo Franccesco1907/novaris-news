@@ -42,7 +42,7 @@ Work includes:
 
 ## Phase 1 — Evidence-pipeline spike
 
-**Status:** in progress. The private vertical slices implement validated evidence-admission contracts, a pure deterministic policy, canonical immutable evidence-package assembly, deterministic audit lineage, a PostgreSQL 17 test adapter, and synthetic CLI harnesses. They do not yet generate or validate a script, operate a production database, or cover all 24 fixtures.
+**Status:** in progress. The private vertical slices implement validated evidence-admission contracts, canonical immutable evidence-package assembly, deterministic audit lineage, a PostgreSQL 17 evidence adapter, and deterministic Spanish exact-claim script generation with whole-script validation. They do not persist script lineage, use a real model, operate a production database, or cover all 24 fixtures.
 
 **Objective:** prove the informational core without audio, a public site, or continuous scheduling.
 
@@ -70,7 +70,7 @@ Requirements:
 
 ### Implemented vertical slices
 
-The implemented slices stop before the generative boundary:
+The implemented synthetic vertical path now crosses a tightly bounded local generation boundary:
 
 1. validate a synthetic evidence-admission request;
 2. count independence by upstream origin group rather than URL;
@@ -80,7 +80,9 @@ The implemented slices stop before the generative boundary:
 6. re-evaluate eligible decisions before evidence-package assembly;
 7. bind immutable snapshots, origin roots, atomic claims, and structural evidence links into a canonical content-addressed package;
 8. preserve exact package bytes in a deterministic per-story audit chain and verify reconstruction against a trusted expected head; and
-9. persist artifacts and events atomically through a PostgreSQL adapter with per-stream locking, idempotency, and a restricted runtime role.
+9. persist evidence artifacts and events atomically through a PostgreSQL adapter with per-stream locking, idempotency, and a restricted runtime role;
+10. reconstruct evidence from audit identity before invoking a bounded local generator; and
+11. reject the whole script unless disclosure, exact admitted claim text, evidence ownership, context, ordering, and transcript all validate.
 
 This is progress toward the Phase 1 exit gate, not evidence that the gate has passed.
 
@@ -176,4 +178,4 @@ These products help frame the market, but public pages often describe intended c
 
 ## Immediate next step
 
-Extend the private slice with bounded script generation and semantic claim validation, then implement the remaining [Phase 1 synthetic fixtures](PHASE_1_FIXTURES.md). Audit persistence still needs independent head anchoring, operational recovery, and production hardening. Real connectors stay blocked until their source-registry admission work passes; accountable roles, procedure tests, and counsel/authority decisions remain mandatory before any public launch.
+Persist `ValidatedScriptVersion` lineage as a separate audit work unit, then expand [Phase 1 synthetic fixtures](PHASE_1_FIXTURES.md) and stronger semantic validation. Evidence audit persistence still needs independent head anchoring, operational recovery, and production hardening. Real connectors stay blocked until their source-registry admission work passes; accountable roles, procedure tests, and counsel/authority decisions remain mandatory before any public launch.

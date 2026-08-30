@@ -38,6 +38,9 @@ importers:
       '@novaris/evidence-pipeline':
         specifier: workspace:*
         version: link:../../packages/evidence-pipeline
+      '@novaris/script-generation':
+        specifier: workspace:*
+        version: link:../../packages/script-generation
       '@novaris/shared-contracts':
         specifier: workspace:*
         version: link:../../packages/shared-contracts
@@ -70,6 +73,16 @@ importers:
         specifier: 8.23.1
         version: 8.23.1
 
+  packages/claim-validation:
+    dependencies:
+      '@novaris/shared-contracts':
+        specifier: workspace:*
+        version: link:../shared-contracts
+    devDependencies:
+      '@types/node':
+        specifier: 24.13.3
+        version: 24.13.3
+
   packages/editorial-policy:
     dependencies:
       '@novaris/shared-contracts':
@@ -81,6 +94,25 @@ importers:
       '@novaris/shared-contracts':
         specifier: workspace:*
         version: link:../shared-contracts
+
+  packages/script-generation:
+    dependencies:
+      '@novaris/audit-lineage':
+        specifier: workspace:*
+        version: link:../audit-lineage
+      '@novaris/claim-validation':
+        specifier: workspace:*
+        version: link:../claim-validation
+      '@novaris/shared-contracts':
+        specifier: workspace:*
+        version: link:../shared-contracts
+    devDependencies:
+      '@novaris/evidence-pipeline':
+        specifier: workspace:*
+        version: link:../evidence-pipeline
+      '@types/node':
+        specifier: 24.13.3
+        version: 24.13.3
 
   packages/shared-contracts:
     dependencies:

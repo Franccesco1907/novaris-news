@@ -1,19 +1,21 @@
 {
-  "name": "@novaris/phase1-harness",
+  "name": "@novaris/script-generation",
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "start": "node dist/index.js",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@novaris/audit-lineage": "workspace:*",
-    "@novaris/audit-postgres": "workspace:*",
-    "@novaris/editorial-policy": "workspace:*",
-    "@novaris/evidence-pipeline": "workspace:*",
-    "@novaris/script-generation": "workspace:*",
+    "@novaris/claim-validation": "workspace:*",
     "@novaris/shared-contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "@novaris/evidence-pipeline": "workspace:*",
+    "@types/node": "24.13.3"
   }
 }

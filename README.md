@@ -7,7 +7,7 @@ Novaris News is an early-stage concept for an autonomous, AI-run news service th
 
 ## Current status
 
-**Phase 1 — Evidence-pipeline spike has started while Phase 0 launch blockers remain open.** The private slices validate synthetic evidence-admission inputs, assemble immutable content-addressed evidence packages, construct deterministic audit lineage, and can persist that lineage in an isolated PostgreSQL 17 test database. They have no real connectors, model call, audio, scheduler, public API, deployment, or publication path, and they do not yet cover all 24 fixture cases.
+**Phase 1 — Evidence-pipeline spike has started while Phase 0 launch blockers remain open.** The private slices validate synthetic evidence-admission inputs, assemble immutable content-addressed evidence packages, construct deterministic audit lineage, and generate a structurally validated Spanish script through a local deterministic adapter. They can persist evidence lineage in an isolated PostgreSQL 17 test database, but they have no real connectors, model call, audio, scheduler, public API, deployment, or publication path and do not yet cover all 24 fixture cases.
 
 ## MVP at a glance
 
@@ -57,7 +57,7 @@ corepack pnpm test
 corepack pnpm harness
 ```
 
-The harness is deterministic and private. It calls no external API or language model and exits nonzero when an implemented synthetic case disagrees with its expected outcome.
+The default harness is deterministic, private, and database-free. It reconstructs an audited synthetic evidence package, generates an exact-claim Spanish `ValidatedScriptVersion`, and exits nonzero when an implemented case disagrees with its expected outcome. It calls no external API or language model.
 
 The default harness remains database-free. PostgreSQL audit checks are explicit and use a dedicated disposable database with distinct migrator and runtime roles:
 
@@ -84,4 +84,4 @@ Never point these commands at an existing application or Supabase database. The 
 
 ## Open decisions
 
-The immediate engineering work is to expand fixture coverage, add bounded script generation and semantic claim validation, and harden audit operations without admitting real sources prematurely. In parallel, connector admission, responsible roles, procedure tests, and the counsel/authority questions in the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist) remain mandatory. Nothing in the current slice permits public launch or real-source publication.
+The immediate engineering work is to persist validated-script lineage as a separate audit work unit, expand fixture coverage, and add stronger semantic controls without admitting real sources prematurely. In parallel, connector admission, responsible roles, procedure tests, and the counsel/authority questions in the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist) remain mandatory. Nothing in the current slice permits public launch or real-source publication.

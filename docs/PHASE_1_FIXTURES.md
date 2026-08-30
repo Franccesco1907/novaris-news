@@ -71,7 +71,7 @@ The private harness and unit suite now exercise deterministic evidence-package a
 | EP09–EP10 | Permutation-invariant identity, canonical bytes, deep freezing, and caller-input detachment |
 | EP11–EP12 | Snapshot consistency and missing-node, cyclic, or ambiguous origin-graph rejection |
 
-Package hashes prove byte identity, not factual truth, legal authorization, or semantic claim support. Semantic claim validation remains future Phase 1 work.
+Package hashes prove byte identity, not factual truth, legal authorization, or semantic claim support. Independent semantic and factual validation remains future Phase 1 work.
 
 ## Implemented audit-lineage cases
 
@@ -89,6 +89,23 @@ The audit unit and PostgreSQL integration suites use synthetic packages only. Th
 
 Verification requires a trusted expected stream head. Complete deletion cannot be detected when the only trusted head is deleted with the same database; independent anchoring and production recovery controls are not implemented.
 
+## Implemented script-generation cases
+
+The current adapter is local and deterministic. It emits exact admitted claim text; no LLM, network, paraphrasing, or raw source document enters the generator boundary.
+
+| ID | Script behavior |
+| --- | --- |
+| CV01–CV03 | Exact supported script acceptance and mandatory sentence-zero disclosure |
+| CV04–CV06 | Known, non-duplicated claim/evidence references and exact claim-to-evidence ownership |
+| CV07–CV08 | Paraphrase or unsupported causation rejection and whole-script failure without partial acceptance |
+| CV09–CV10 | Unique contiguous sentence identity/order and transcript derivation |
+| SG01–SG03 | Verified audit reconstruction, no raw-package input path, and no generator call after audit failure |
+| SG04–SG06 | Bounded generator context, strict malformed/oversized output rejection, and context binding |
+| SG07–SG08 | Deterministic frozen identity and typed provider exceptions |
+| SG09–SG10 | Shared claim/sentence limits and pre-generation aggregate transcript feasibility |
+
+These cases prove structural traceability, not source truth or independent semantic entailment. `ValidatedScriptVersion` is not publishable, and its audit persistence is intentionally deferred to a separate work unit.
+
 ## Exit evidence
 
 Phase 1 cannot claim success until the harness proves:
@@ -99,4 +116,4 @@ Phase 1 cannot claim success until the harness proves:
 - replay and withdrawal decisions are enforced per playback request; and
 - audit reconstruction includes input fingerprints, rights evidence, policies, decisions, script/audio versions, and operator actions.
 
-A private synthetic harness is implemented and tested for the admission and evidence-package cases described above. An explicit database-backed audit harness persists, reconnects, verifies, and reconstructs one synthetic package. Real connectors remain non-active, the broader F01–F24 exit evidence is incomplete, and the Phase 1 exit gate has not passed.
+A private synthetic harness is implemented and tested for admission, evidence-package, audit reconstruction, and one validated-script case. An explicit database-backed audit harness persists, reconnects, verifies, and reconstructs one synthetic package. Real connectors remain non-active, the broader F01–F24 exit evidence and script audit lineage are incomplete, and the Phase 1 exit gate has not passed.

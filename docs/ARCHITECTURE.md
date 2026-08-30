@@ -19,13 +19,15 @@ novaris-news/
 │   ├── editorial-policy/     # Pure fail-closed evidence admission rules
 │   ├── evidence-pipeline/    # Deterministic EvidencePackage assembly
 │   ├── audit-lineage/        # Content-addressed audit domain and store port
-│   └── audit-postgres/       # PostgreSQL adapter, migration, and integration tests
+│   ├── audit-postgres/       # PostgreSQL adapter, migration, and integration tests
+│   ├── claim-validation/     # Whole-script structural evidence validation
+│   └── script-generation/    # Audit-first generation use case and local adapter
 ├── compose.audit-test.yaml   # Disposable PostgreSQL 17 integration service
 ├── config/                   # Non-active source candidates
 └── docs/                     # Product, policy, and architecture contracts
 ```
 
-Only packages with working behavior exist. The planned `source-catalog`, `script-generation`, and `claim-validation` boundaries will be added as executable vertical slices—not as empty placeholders.
+Only packages with working behavior exist. The planned `source-catalog` boundary will be added as an executable vertical slice—not as an empty placeholder.
 
 ```text
 phase1-harness -> editorial-policy -> shared-contracts
@@ -33,6 +35,9 @@ phase1-harness -> evidence-pipeline -> shared-contracts
 phase1-harness -> audit-lineage -> evidence-pipeline, shared-contracts
 phase1-harness -> audit-postgres -> audit-lineage
 audit-postgres -> audit-lineage -> evidence-pipeline, shared-contracts
+claim-validation -> shared-contracts
+script-generation -> audit-lineage, claim-validation, shared-contracts
+phase1-harness -> script-generation
 ```
 
 - Domain policy is pure and has no database, network, model, or framework dependency.
@@ -41,7 +46,9 @@ audit-postgres -> audit-lineage -> evidence-pipeline, shared-contracts
 - Evidence-package assembly owns an admission-evaluator port. The harness adapts `editorial-policy`; `evidence-pipeline` does not import it.
 - `audit-lineage` owns the application port, deterministic event construction, verification, and package reconstruction; it does not import PostgreSQL.
 - `audit-postgres` implements that port with transactions, per-stream advisory locks, an append-only schema, and separate migration/runtime roles. Domain packages do not import a database client.
-- Future AI and text-to-speech providers will be replaceable adapters. A generator may receive only an admitted `EvidencePackage`.
+- `script-generation` accepts only audit identity and versioned generation controls, reconstructs the package internally, and exposes a bounded generator port.
+- `claim-validation` rejects the entire candidate unless disclosure, sentence order, exact claim text, evidence ownership, context, and transcript all match.
+- The current generator adapter is deterministic and local. Future AI and text-to-speech providers remain replaceable adapters and may receive only the same bounded request—not raw documents or unrestricted context.
 
 | Area | First Phase 1 slice | Later Phase 1 or Phase 2 |
 | --- | --- | --- |
@@ -49,12 +56,12 @@ audit-postgres -> audit-lineage -> evidence-pipeline, shared-contracts
 | Admission | Core fail-closed evidence rules | Full topic-policy and revision/tombstone coverage |
 | Evidence package | Canonically serialized, content-addressed, recursively frozen synthetic package | Broader fixture coverage and semantic validation |
 | Audit lineage | Canonical event hashing, chain verification, package reconstruction, and exact artifact bytes | External head anchoring, backup/restore, monitoring, and production hardening |
-| Generation | Not implemented | Bounded generation and semantic claim validation |
+| Generation | Deterministic Spanish exact-claim script with whole-script validation | Provider adapter evaluation and stronger semantic validation |
 | Persistence | Explicit disposable PostgreSQL 17 adapter test path; default harness remains DB-free | Hosted database, recovery objectives, operational hardening |
 | Runtime | Private deterministic CLI | Internal orchestration, then private bulletin pipeline |
 | Publication/audio | Not implemented | Phase 2 only |
 
-The implemented slices prove policy admission, structural evidence-package assembly, deterministic audit reconstruction, and adapter-level PostgreSQL persistence using synthetic data. They do not satisfy all 24 fixture cases or the Phase 1 exit gate.
+The implemented slices prove policy admission, structural evidence-package assembly, deterministic audit reconstruction, adapter-level PostgreSQL evidence persistence, and exact-claim Spanish script validation using synthetic data. They do not persist script lineage, satisfy all 24 fixture cases, or pass the Phase 1 exit gate.
 
 ## Logical pipeline
 
@@ -96,8 +103,8 @@ Observability, audit, policy versioning, and kill-switch control span every stag
 | Audit lineage | Preserve exact canonical package bytes, construct content-addressed per-story events, verify a chain against a trusted expected head, and reconstruct validated packages | Treat hashes as proof of factual truth or silently accept a missing/truncated stream |
 | PostgreSQL audit adapter | Atomically append artifacts and events under a per-stream lock, enforce idempotency, and expose the domain store port | Leak `pg` into domain packages or grant the runtime role ownership/DDL/mutation privileges |
 | Prioritization | Rank eligible stories for public relevance, urgency, recency, and diversity | Admit rejected stories or optimize solely for engagement |
-| Script generation | Produce a concise bulletin script constrained to approved evidence | Add unsupported context, quotes, or certainty |
-| Claim validation | Map material claims to evidence and verify required disclosure | Repair missing evidence by inventing text |
+| Script generation | Reconstruct a verified package from audit identity and send only bounded claim/link context to a replaceable generator | Accept a raw package, raw documents, discovery data, or unrestricted context |
+| Claim validation | Require disclosure at sentence zero, exact admitted claim text, owned evidence links, stable context, and a derived transcript | Patch or partially accept an invalid script, or treat structural traceability as independent factual proof |
 | Text-to-speech | Render an approved script and disclosure into audio | Change factual wording without creating a new script version |
 | Scheduler and delivery | Assemble bulletins, enforce per-request edition eligibility, publish artifacts, and serve playback | Bypass publication, withdrawal, expiry, correction, or kill-switch state |
 | Provenance and corrections | Expose sources, versions, update links, and correction history | Destructively replace a published record |
@@ -113,14 +120,16 @@ Observability, audit, policy versioning, and kill-switch control span every stag
 | `EvidenceItem` | normalized claim or source passage, document reference, evidence type, independence group, freshness, contradiction status |
 | `RiskDecision` | story ID, policy version, topic/risk classes, evidence evaluation, outcome (`eligible`, `hold`, `reject`), machine-readable reasons |
 | `StoryBrief` | eligible evidence set, factual boundaries, priority signals, intended audience/language, expiry time |
-| `ScriptVersion` | immutable script, sentence-to-evidence links, model/prompt versions, disclosure text, validation result |
+| `ValidatedScriptVersion` | content identity, evidence-package and audit-event identity, generation-policy context, exact disclosure, ordered sentences, claim/evidence links, and derived transcript |
 | `AudioAsset` | script version, voice configuration, audio fingerprint, duration, generation status |
 | `Bulletin` | ordered item versions, schedule, original publication time, 16-hour expiry, transcript, audio asset, publication/withdrawal state, disclosure, region/language |
 | `CorrectionRecord` | affected item/version, trigger evidence, corrected claims, replacement version, timestamps, audience notification state |
 | `EvidencePackageArtifact` | exact canonical package bytes, semantic package snapshot, package ID, SHA-256 fingerprint, media type, and byte length |
 | `AuditEvent` | schema version, decimal sequence, story stream, previous hash, request/idempotency fingerprints, event type and time, and exact package-lineage fingerprints |
 
-Data object names remain conceptual unless implemented in a versioned contract. The current code implements evidence-admission boundaries, a versioned `EvidencePackage`, `EvidencePackageArtifact`, and immutable audit-event contracts.
+Data object names remain conceptual unless implemented in a versioned contract. The current code implements evidence-admission boundaries, a versioned `EvidencePackage`, `EvidencePackageArtifact`, immutable audit-event contracts, and `ValidatedScriptVersion`.
+
+The current whole-script validator proves deterministic structural traceability to admitted claim text and evidence references. It does not prove that the underlying source claim is factually true, that a source omitted no material context, or that exact claim text is editorially sufficient. Paraphrasing is deliberately disabled in this slice.
 
 Audit verification requires a trusted expected head supplied from outside the stream being checked. This detects tail truncation, but no hash chain can prove that a whole stream existed after both the stream and its only in-database head reference are deleted. Production design therefore still needs an independently protected head anchor plus tested backup and restore procedures.
 
@@ -130,8 +139,8 @@ The migration stores exact canonical bytes beside semantic JSON and uses constra
 
 1. **Untrusted input:** all retrieved content is untrusted, including text that attempts to instruct the AI system.
 2. **Evidence admission:** only normalized evidence from an admitted evidence-tier source and successful policy evaluation may enter a `StoryBrief`; discovery-tier content never enters the brief.
-3. **Generative boundary:** the generator receives the bounded brief, not unrestricted source feeds or operator secrets.
-4. **Publication boundary:** only an immutable script version with a successful claim-validation result can produce a publishable audio asset.
+3. **Generative boundary:** the public use case receives audit identity rather than a raw package; only after verified reconstruction does the generator receive bounded claim and evidence-reference context.
+4. **Publication boundary:** `ValidatedScriptVersion` is not publishable. Audio and publication controls remain unimplemented.
 5. **Operational boundary:** kill-switch and policy changes require authenticated, auditable operator authority.
 
 ## Failure behavior
