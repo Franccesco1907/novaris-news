@@ -1,55 +1,14 @@
 # Novaris News
 
-Novaris News is an early-stage concept for an autonomous, AI-run news service that helps a global audience follow important events. The MVP is an audio-first web radio that produces sourced news bulletins without a routine human approval step.
+Private synthetic engineering spike for a proposed Spanish audio-news service for Peru and Latin America. It is not production-ready or a reliable news source; Phase 0 launch blockers remain open.
 
-> [!WARNING]
-> This repository contains planning and a private, synthetic Phase 1 engineering spike. Novaris News is not production-ready and must not be treated as a reliable news source.
+The current workspace validates evidence admission, assembles immutable evidence packages, records deterministic audit lineage (optionally in test PostgreSQL 17), and generates exact-claim Spanish scripts through a deterministic local adapter. It has no real connectors/model calls, audio, scheduler, public API, deployment or publication path; coverage is short of the 24 planned fixture cases.
 
-## Current status
+## Develop
 
-**Phase 1 — Evidence-pipeline spike has started while Phase 0 launch blockers remain open.** The private slices validate synthetic evidence-admission inputs, assemble immutable content-addressed evidence packages, construct deterministic audit lineage, and generate a structurally validated Spanish script through a local deterministic adapter. They can persist evidence lineage in an isolated PostgreSQL 17 test database, but they have no real connectors, model call, audio, scheduler, public API, deployment, or publication path and do not yet cover all 24 fixture cases.
+Use Node.js 24 and the pnpm version pinned in package.json. Ensure pnpm is on PATH (for Corepack, run `corepack enable pnpm` once): package scripts invoke pnpm internally.
 
-## MVP at a glance
-
-The first release is designed to:
-
-- ingest news from an approved source catalog;
-- normalize, deduplicate, and corroborate reports across sources;
-- suppress claims that do not meet automated evidence rules;
-- prioritize major global events across broad subject areas;
-- generate scripts and synthetic narration;
-- publish scheduled web-audio bulletins twice daily;
-- disclose the use of AI visibly and audibly;
-- expose source provenance and issue corrections or updates.
-
-The MVP is **not** a full AI television channel and does not promise uninterrupted 24/7 live programming. Topic-specific channels, configurable presentation tone, and numerical confidence scores are later possibilities. A confidence score will not be shown until it has a calibrated, validated methodology.
-
-Initial coverage includes current affairs in Peru, Latin America, and the world; general economics without financial recommendations; technology and science; climate and environment; and major public-interest events. Unconfirmed crime, medical advice, election polling, emergency alerts, and live conflict casualty figures are excluded until deterministic controls exist.
-
-Publication evidence must originate from an admitted official primary source. An admitted established media source may corroborate that evidence only after its identity, permitted use, attribution, and independence group are verified. Aggregators and social networks may identify leads, but their content is never publication evidence. Unresolved contradictions or insufficient evidence cause the affected item to be held or rejected.
-
-## Documentation
-
-| Document | Purpose |
-| --- | --- |
-| [Implementation plan](docs/IMPLEMENTATION_PLAN.md) | Phased delivery sequence, measurable gates, and comparable product signals |
-| [Phase 0 foundations](docs/PHASE_0_FOUNDATIONS.md) | Confirmed decisions, Peru requirements baseline, source registry, open legal questions, and exit checklist |
-| [Product requirements](docs/PRODUCT_REQUIREMENTS.md) | MVP boundaries, requirements, acceptance criteria, metrics, and roadmap |
-| [Logical architecture](docs/ARCHITECTURE.md) | Technology-independent system boundaries, data flow, and failure behavior |
-| [Editorial safety](docs/EDITORIAL_SAFETY.md) | Automated evidence, disclosure, provenance, correction, and stop rules |
-| [Bulletin lifecycle](docs/BULLETIN_LIFECYCLE.md) | Sixteen-hour replay window, request-time eligibility, withdrawal, and silence rules |
-| [Topic evidence policies](docs/TOPIC_EVIDENCE_POLICIES.md) | Deterministic category thresholds, freshness, independence, and fail-closed outcomes |
-| [Source registry](config/source-registry.yaml) | Machine-readable non-production source candidates, rights evidence, and admission blockers |
-| [Corrections and incidents](docs/CORRECTIONS_AND_INCIDENTS.md) | Severity model, rectification baseline, withdrawal, escalation, and recovery runbook |
-| [Privacy and retention](docs/PRIVACY_AND_RETENTION.md) | Data inventory, security document, incident procedure, and unresolved retention schedule |
-| [Legal review checklist](docs/LEGAL_REVIEW_CHECKLIST.md) | Confirmed official sources, product inferences, and counsel/authority blockers |
-| [Phase 1 fixtures](docs/PHASE_1_FIXTURES.md) | Synthetic and rights-cleared cases with expected eligible/hold/reject/stop outcomes |
-
-## Development quick path
-
-The current workspace requires Node.js 24 and uses the package manager version pinned in `package.json`.
-
-```bash
+```sh
 nvm use
 corepack pnpm install --frozen-lockfile
 corepack pnpm typecheck
@@ -57,13 +16,11 @@ corepack pnpm test
 corepack pnpm harness
 ```
 
-The default harness is deterministic, private, and database-free. It reconstructs an audited synthetic evidence package, generates an exact-claim Spanish `ValidatedScriptVersion`, and exits nonzero when an implemented case disagrees with its expected outcome. It calls no external API or language model.
+The deterministic harness is database-free and exits nonzero on implemented-case expectation failures. For isolated database checks (POSIX shell):
 
-The default harness remains database-free. PostgreSQL audit checks are explicit and use a dedicated disposable database with distinct migrator and runtime roles:
-
-```bash
+```sh
 cp .env.audit.example .env.audit
-# Replace every placeholder with local test-only values, then:
+# Replace every placeholder with local test-only values before continuing.
 set -a; source .env.audit; set +a
 corepack pnpm audit:db:up
 trap 'corepack pnpm audit:db:down' EXIT
@@ -72,16 +29,18 @@ corepack pnpm test:integration:audit
 corepack pnpm harness:audit
 ```
 
-Never point these commands at an existing application or Supabase database. The Compose service and its volume are test-only and `audit:db:down` removes both.
+Never use an existing application/Supabase database: distinct migrator/runtime roles and the dedicated disposable Compose database are required; teardown removes its volume.
 
-## Principles
+## Read by task
 
-1. **Autonomous does not mean ungoverned.** Publication has no routine human approval gate, but automated editorial and safety gates are mandatory.
-2. **Evidence before fluency.** A polished script never compensates for weak sourcing.
-3. **Traceability by default.** Every published item must retain the sources and transformations behind it.
-4. **Visible AI identity.** Disclosure belongs with the content, not only in legal terms.
-5. **Safe failure.** When evidence or critical infrastructure is uncertain, the system stops or omits the item rather than improvising.
+| Task | Contract |
+| --- | --- |
+| Delivery and current gaps | [Implementation gates](docs/IMPLEMENTATION_PLAN.md), [fixtures](docs/PHASE_1_FIXTURES.md) |
+| Product and system boundaries | [Requirements](docs/PRODUCT_REQUIREMENTS.md), [architecture](docs/ARCHITECTURE.md) |
+| Sources and evidence | [Registry](config/source-registry.yaml), [editorial safety](docs/EDITORIAL_SAFETY.md), [topic rules](docs/TOPIC_EVIDENCE_POLICIES.md) |
+| Publication, corrections, shutdown | [Lifecycle](docs/BULLETIN_LIFECYCLE.md), [incidents](docs/CORRECTIONS_AND_INCIDENTS.md) |
+| Launch approval and operations | [Phase 0 checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist), [legal questions](docs/LEGAL_REVIEW_CHECKLIST.md), [privacy/retention](docs/PRIVACY_AND_RETENTION.md) |
 
-## Open decisions
+Publication evidence requires admitted official primary sources; admitted independent media may only corroborate. Aggregators/social networks are discovery-only. Unresolved rights, contradictions or insufficient evidence hold/reject the item; a model is never a source. Mandatory disclosure, provenance, corrections and stop controls cannot be replaced with disclaimers. Numerical confidence scores remain deferred until validated.
 
-The immediate engineering work is to persist validated-script lineage as a separate audit work unit, expand fixture coverage, and add stronger semantic controls without admitting real sources prematurely. In parallel, connector admission, responsible roles, procedure tests, and the counsel/authority questions in the [Phase 0 exit checklist](docs/PHASE_0_FOUNDATIONS.md#exit-checklist) remain mandatory. Nothing in the current slice permits public launch or real-source publication.
+Next engineering work: persist validated-script lineage, expand fixtures and strengthen semantic controls. Real-source admission, accountable operators, tested procedures and counsel/authority decisions remain mandatory before launch.
